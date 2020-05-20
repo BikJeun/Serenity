@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "18026011349-t3oee15kc0jdg7b64vnrs7ubsppndlm8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.serenity",
+            "certificate_hash": "0e6ac064231427473339d4f80d6581210c547e0d"
+          }
+        },
+        {
           "client_id": "18026011349-p0rfn2a2gp81h1q55smrftaptr6583s0.apps.googleusercontent.com",
           "client_type": 3
         }

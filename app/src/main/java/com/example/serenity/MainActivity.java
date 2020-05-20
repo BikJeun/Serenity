@@ -11,50 +11,74 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 
-public class MainActivity extends Activity  { //this the login screen
-    Button login,createAccount;
-    EditText usernameInput,passInput;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Objects;
+
+
+public class MainActivity extends Activity {
+    Button login, createAccount;
+    EditText usernameInput, passInput;
+
+    FirebaseAuth auth;
 
     TextView tx1;
     int counter = 3; //im limiting to 3 attempts to login
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) { //this is a method which starts when tat screen appears
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        login = (Button)findViewById(R.id.login);
-        usernameInput = (EditText)findViewById(R.id.editText);
-        passInput = (EditText)findViewById(R.id.editText2);
+        login = (Button) findViewById(R.id.login);
+        usernameInput = (EditText) findViewById(R.id.editText);
+        passInput = (EditText) findViewById(R.id.editText2);
 
-        tx1 = (TextView)findViewById(R.id.attempts); //"Attempts Left"
+        tx1 = (TextView) findViewById(R.id.attempts);
         tx1.setVisibility(View.VISIBLE);
 
-        createAccount = (Button)findViewById(R.id.createAccount);
+        createAccount = (Button) findViewById(R.id.createAccount);
+        auth = FirebaseAuth.getInstance();
+        final FirebaseUser user = auth.getCurrentUser();
 
-        //INCOMPLETE TO BE LINKED TO MAIN MENU
-        // NEED TO ADD SIGN IN FUNCTIONS FROM FIREBASE
-        login.setOnClickListener(new View.OnClickListener() { //when clicking the login button
+
+        login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(usernameInput.getText().toString().equals("admin") &&
-                        passInput.getText().toString().equals("admin")) {
-                    Toast.makeText(getApplicationContext(),
-                            "Redirecting...",Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(getApplicationContext(),
-                               "Wrong Input",Toast.LENGTH_SHORT).show();
+                auth.getCurrentUser().reload();
+                String email = usernameInput.getText().toString();
+                String pwd = passInput.getText().toString();
 
-                            tx1.setVisibility(View.VISIBLE);
-                    tx1.setBackgroundColor(Color.RED);
-                    counter--;
-                    tx1.setText(Integer.toString(counter));
-
-                    if (counter == 0) {
-                        login.setEnabled(false);
-                    }
+                if (email.isEmpty()) {
+                    usernameInput.setError("Please enter email");
+                    usernameInput.requestFocus();
+                    return;
+                } else if (!isValid(email)) {
+                    usernameInput.setError("Please enter valid email");
+                    usernameInput.requestFocus();
+                    return;
                 }
+
+                assert user != null;
+                if (!user.isEmailVerified()) {
+                    Toast.makeText(MainActivity.this, "Verify Email", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
+                if (pwd.isEmpty()) {
+                    passInput.setError("Please enter password");
+                    passInput.requestFocus();
+                    return;
+                }
+
+                loginUser(email, pwd);
             }
         });
 
@@ -65,4 +89,27 @@ public class MainActivity extends Activity  { //this the login screen
             }
         });
     }
+
+    private boolean isValid(String email) {
+        String regex = "^[\\w-_.+]*[\\w-_.]@([\\w]+\\.)+[\\w]+[\\w]$";
+        return email.matches(regex);
+    }
+
+    private void loginUser(String email, String pwd) {
+        auth = FirebaseAuth.getInstance();
+        auth.signInWithEmailAndPassword(email, pwd).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(getApplicationContext(),
+                            "Redirecting...", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(MainActivity.this, HomeScreen.class));
+                } else {
+                    Toast.makeText(MainActivity.this, "Error! " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+
 }

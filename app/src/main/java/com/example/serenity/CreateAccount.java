@@ -11,17 +11,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-/**
- * note to grace: this class is complete and can be documented and fully designed
- * firebase function have been added
- */
 
-public class CreateAccount extends Activity { //THIS THE CREATE ACCOUNT PAGE
+public class CreateAccount extends Activity {
     Button create;
     EditText password1, password2, email;
 
@@ -49,10 +46,15 @@ public class CreateAccount extends Activity { //THIS THE CREATE ACCOUNT PAGE
               String pass1 = password1.getText().toString();
               String pass2 = password2.getText().toString();
 
-              if(emailIn.isEmpty()) {
-                  email.setError("Please enter email");
-                  email.requestFocus();
-              } else if(pass1.isEmpty()) {
+                if (emailIn.isEmpty()) {
+                    email.setError("Please enter email");
+                    email.requestFocus();
+                } else if (!isValid(emailIn)) {
+                    email.setError("Please enter valid email");
+                    email.requestFocus();
+                }
+
+               if(pass1.isEmpty()) {
                   password1.setError("Please enter password");
                   password1.requestFocus();
               } else if(pass2.isEmpty()) {
@@ -70,15 +72,12 @@ public class CreateAccount extends Activity { //THIS THE CREATE ACCOUNT PAGE
                               Toast.makeText(getApplicationContext(), "SignUp Successful :)", Toast.LENGTH_LONG).show();
                               FirebaseUser user = auth.getCurrentUser();
 
-                              user.sendEmailVerification()
-                                      .addOnCompleteListener(new OnCompleteListener<Void>() { //THIS IS THE OPTIONAL PART....DO YOU WANT IT?
-                                          @Override
-                                          public void onComplete(@NonNull Task<Void> task) {
-                                              if (task.isSuccessful()) {
-                                                  Toast.makeText(CreateAccount.this, "Verify your Email", Toast.LENGTH_LONG).show();
-                                              }
-                                          }
-                                      });
+                              user.sendEmailVerification().addOnSuccessListener((new OnSuccessListener<Void>() {
+                                  @Override
+                                  public void onSuccess(Void aVoid) {
+                                      Toast.makeText(CreateAccount.this, "Verification Email Sent", Toast.LENGTH_SHORT).show();
+                                  }
+                              }));
                               startActivity(new Intent(CreateAccount.this, MainActivity.class));
                           }
                       }
@@ -86,7 +85,10 @@ public class CreateAccount extends Activity { //THIS THE CREATE ACCOUNT PAGE
               }
             }
         });
+    }
 
-
+    private boolean isValid(String email) {
+        String regex = "^[\\w-_.+]*[\\w-_.]@([\\w]+\\.)+[\\w]+[\\w]$";
+        return email.matches(regex);
     }
 }
