@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "18026011349",
+    "firebase_url": "https://serenity-data.firebaseio.com",
+    "project_id": "serenity-data",
+    "storage_bucket": "serenity-data.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:18026011349:android:7708dd5d4622553b68205c",
+        "android_client_info": {
+          "package_name": "com.example.serenity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "18026011349-p0rfn2a2gp81h1q55smrftaptr6583s0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAR9ZAKw_zrStaUwD5GIGE3yc-aklViK6A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "18026011349-p0rfn2a2gp81h1q55smrftaptr6583s0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

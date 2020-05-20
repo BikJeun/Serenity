@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Serenity</string>
+    <string name="login">Login</string>
+    <string name="serenity">SERENITY</string>
+    <string name="username">Email</string>
+    <string name="password">Password</string>
+    <string name="loginButton">login</string>
+    <string name="create_account">Create Account</string>
+    <string name="attempts_left">Attempts Left:</string>
+    <string name="create_accountlogo">Create account</string>
+    <string name="email">Email</string>
+    <string name="enter_password">Enter password</string>
+    <string name="re_enter_password">Re-enter password</string>
+    <string name="create">Create</string>
+
+</resources>
