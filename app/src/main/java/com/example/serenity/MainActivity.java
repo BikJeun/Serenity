@@ -2,7 +2,6 @@ package com.example.serenity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 
@@ -103,7 +102,7 @@ public class MainActivity extends Activity {
                 if (task.isSuccessful()) {
                     Toast.makeText(getApplicationContext(),
                             "Redirecting...", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(MainActivity.this, HomeScreen.class));
+                    startActivity(new Intent(MainActivity.this, Calender.class));
                 } else {
                     Toast.makeText(MainActivity.this, "Error! " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
                 }
