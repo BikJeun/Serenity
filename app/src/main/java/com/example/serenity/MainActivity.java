@@ -2,7 +2,6 @@ package com.example.serenity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 
@@ -25,11 +24,7 @@ import java.util.Objects;
 public class MainActivity extends Activity {
     Button login, createAccount;
     EditText usernameInput, passInput;
-
     FirebaseAuth auth;
-
-    TextView tx1;
-    int counter = 3; //im limiting to 3 attempts to login
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +32,9 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         login = (Button) findViewById(R.id.login);
-        usernameInput = (EditText) findViewById(R.id.editText);
-        passInput = (EditText) findViewById(R.id.editText2);
+        usernameInput = (EditText) findViewById(R.id.emailText);
+        passInput = (EditText) findViewById(R.id.pwdText);
 
-        tx1 = (TextView) findViewById(R.id.attempts);
-        tx1.setVisibility(View.VISIBLE);
 
         createAccount = (Button) findViewById(R.id.createAccount);
         auth = FirebaseAuth.getInstance();

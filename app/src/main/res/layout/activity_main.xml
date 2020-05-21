@@ -3,94 +3,126 @@
     xmlns:tools = "http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height = "match_parent"
+    android:background="@drawable/sunset_dave"
     tools:context = ".MainActivity">
 
 
-    <TextView
-        android:text = "@string/login"
-        android:layout_width="wrap_content"
-        android:layout_height = "wrap_content"
-        android:id = "@+id/textview"
-        android:textSize = "35sp"
-        android:layout_alignParentTop = "true"
-        android:layout_centerHorizontal = "true" />
+<!--    <TextView-->
+<!--        android:id = "@+id/textview"-->
+<!--        android:text = "@string/login"-->
+<!--        -->
+<!--        android:layout_below="@id/appName"-->
+<!--        android:layout_marginTop="40dp"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height = "wrap_content"-->
+<!--        -->
+<!--        android:textSize = "30sp"-->
+<!--        android:layout_centerHorizontal = "true" />-->
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/appName"
+        android:text="S E R E N I T Y"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textview"
         android:layout_centerHorizontal="true"
-        android:text="@string/serenity"
-        android:textColor="#2196F3"
-        android:textSize="35sp" />
+        android:layout_marginTop="100dp"
+
+        android:fontFamily="@font/roboto_light"
+        android:textSize="50sp" />
+
 
     <EditText
-        android:id="@+id/editText"
-        android:layout_width="wrap_content"
+        android:id="@+id/emailText"
+
+        android:layout_width="372dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textview"
+        android:layout_below="@+id/appName"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="46dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="110dp"
+        android:layout_marginEnd="30dp"
+
+        android:autofillHints="Username"
         android:cursorVisible="true"
         android:focusable="true"
+        android:fontFamily="sans-serif-thin"
         android:hint="@string/username"
         android:inputType="text"
-        android:textColorHighlight="#ff7eff15"
-        android:textColorHint="#0C79AA"
-        android:autofillHints="Username" />
+        android:textColor="#313131"
+        android:textColorHighlight="#FFFFFF"
+        android:textColorHint="#808283" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/pwdText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editText"
-        android:layout_alignEnd="@+id/editText"
-        android:layout_alignRight="@+id/editText"
+        android:layout_below="@+id/emailText"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+
         android:ems="10"
+        android:fontFamily="sans-serif-thin"
         android:hint="@string/password"
+        android:importantForAutofill="no"
         android:inputType="textPassword"
-        android:textColorHint="#0C79AA"
-        android:importantForAutofill="no" />
+        android:textColor="#313131"
+        android:textColorHighlight="#FFFFFF"
+        android:textColorHint="#808283" />
 
 
     <Button
         android:id="@+id/login"
         android:layout_width="wrap_content"
+
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editText2"
-        android:layout_marginStart="21dp"
-        android:layout_marginLeft="21dp"
-        android:layout_marginEnd="-229dp"
-        android:layout_marginRight="-229dp"
-        android:layout_toEndOf="@+id/createAccount"
-        android:layout_toRightOf="@+id/createAccount"
+        android:layout_below="@+id/pwdText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:fontFamily="sans-serif-light"
         android:text="@string/loginButton" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
+        android:layout_below="@id/login"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="130dp"
+        android:fontFamily="sans-serif-light"
+        android:text="Don't have an account? Sign up here!"
+        android:textColor="#9FA2A4" />
 
     <Button
         android:id="@+id/createAccount"
         android:layout_width="wrap_content"
+
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editText2"
-        android:layout_marginStart="-131dp"
-        android:layout_marginLeft="-131dp"
-        android:layout_toEndOf="@+id/textview"
-        android:layout_toRightOf="@+id/textview"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:fontFamily="sans-serif-light"
         android:text="@string/create_account" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/attempts_left"
-        android:id="@+id/attempts"
-        android:layout_below="@+id/createAccount"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:textSize="25sp" />
+    <!--    <TextView-->
+<!--        android:id="@+id/attempts"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@+id/createAccount"-->
+<!--        android:layout_alignParentStart="true"-->
+<!--        android:layout_alignParentLeft="true"-->
+<!--        android:layout_marginStart="2dp"-->
+<!--        android:layout_marginLeft="2dp"-->
+<!--        android:layout_marginTop="21dp"-->
+<!--        android:text="@string/attempts_left"-->
+<!--        android:textSize="25sp" />-->
 
 </RelativeLayout>

@@ -12,5 +12,8 @@
     <string name="enter_password">Enter password</string>
     <string name="re_enter_password">Re-enter password</string>
     <string name="create">Create</string>
+    <string name="s_e_r_e_n_i_t_y">S E R E N I T Y</string>
+    <string name="welcome">WELCOME</string>
+    <string name="w_e_l_c_o_m_e" />
 
 </resources>
