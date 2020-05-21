@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<<<<<<< HEAD:app/src/main/res/layout/activity_home_screen.xml
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -33,5 +34,19 @@
             android:fontFamily="sans-serif-condensed-light"
             android:textColor="#9FA2A4"
             android:textSize="36sp" />
+=======
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/holo_blue_light">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="calender frag"
+        android:layout_centerInParent="true"
+        android:textSize="50sp"
+        />
+>>>>>>> 3346db81c07a2b94aa49cf50704a226b9e847826:app/src/main/res/layout/fragment_calender.xml
 
 </RelativeLayout>
