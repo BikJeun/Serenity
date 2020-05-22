@@ -54,7 +54,7 @@
         android:inputType="text"
         android:textColor="#313131"
         android:textColorHighlight="#FFFFFF"
-        android:textColorHint="#808283" />
+        android:textColorHint="#313131" />
 
     <EditText
         android:id="@+id/pwdText"
@@ -75,7 +75,7 @@
         android:inputType="textPassword"
         android:textColor="#313131"
         android:textColorHighlight="#FFFFFF"
-        android:textColorHint="#808283" />
+        android:textColorHint="#313131" />
 
 
     <Button
