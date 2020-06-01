@@ -20,4 +20,11 @@
     <string name="to_do_list">To Do List</string>
     <string name="settings">Settings</string>
 
+    <string name="MODEL">list</string>
+    <string name="position">position</string>
+    <string name="tasks">Tasks</string>
+    <string name="task">Task</string>
+    <string name="description">Description</string>
+    <string name="add">ADD</string>
+
 </resources>

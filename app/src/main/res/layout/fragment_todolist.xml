@@ -1,17 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_red_light">
+>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="to go list frag"
-        android:layout_centerInParent="true"
-        android:textSize="50sp"
-        />
+    <LinearLayout
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="30dp"
+            android:visibility="gone"
+            android:background="#2d7af2" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="0dp"
+            android:paddingTop="15dp"
+            android:layout_marginTop="55dp"
+            />
+
+    </LinearLayout>
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -23,7 +37,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tasks"
+        android:text="@string/tasks"
         android:textSize="30sp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp" />
