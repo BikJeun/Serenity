@@ -49,11 +49,6 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
 
     }
 
-    public void removeItem(int position) {
-        models.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, models.size());
-    }
     public void restoreItem(TodoListModel model, int position) {
         models.add(position, model);
         // notify item added by position
@@ -192,9 +187,6 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
         });
     }
 
-    public void deleteItem(int pos) {
-
-    }
 
     @Override
     public int getItemCount() {

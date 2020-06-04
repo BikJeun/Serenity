@@ -94,21 +94,24 @@ public class ToDoListFragment extends Fragment {
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             int position = viewHolder.getAdapterPosition();
             TodoListModel parent = listAdapter.getRootModel();
-            Log.d("delete", "onSwiped: " + position);
-            Log.d("delete",""+ viewHolder.getItemId());
             final TodoListModel deletedModel = models.get(position);
-
             final int deletedPos = position;
+            final boolean[] confirm = new boolean[1];
 
-            Snackbar snackbar = Snackbar.make(getView(), "removed from Recyclerview!", Snackbar.LENGTH_LONG);
+            Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.rlContent), "removed from Recyclerview!", Snackbar.LENGTH_LONG);
             snackbar.setAction("UNDO", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listAdapter.restoreItem(deletedModel, deletedPos);
+                    confirm[0] = false;
                 }
             });
-            listAdapter.notifyItemRemoved(position);
+            snackbar.show();
+            if(confirm[0] == false) {
+                return;
+            }
             deleteData(parent, uid, deletedModel);
+
+            listAdapter.notifyItemRemoved(position);
         }
 
         @Override
@@ -131,7 +134,7 @@ public class ToDoListFragment extends Fragment {
                     p.setColor(Color.parseColor("#D32F2F"));
                     RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(), (float) itemView.getRight(), (float) itemView.getBottom());
                     c.drawRect(background, p);
-                   // icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_delete_forever_black_24dp);
+                    // icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_delete_forever_black_24dp);
                     Drawable icons = getResources().getDrawable(R.drawable.ic_delete_forever_black_24dp);
                     icon = drawableToBitmap(icons);
                     RectF icon_dest = new RectF((float) itemView.getRight() - 2 * width, (float) itemView.getTop() + width, (float) itemView.getRight() - width, (float) itemView.getBottom() - width);
@@ -142,11 +145,11 @@ public class ToDoListFragment extends Fragment {
 
         }
 
-       private void deleteData(TodoListModel parent, String uid, TodoListModel child) {
+        private void deleteData(TodoListModel parent, String uid, TodoListModel child) {
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference(parent.name).child(uid);
             ref.child(child.id).removeValue();
 
-}
+        }
     };
 
     public static Bitmap drawableToBitmap (Drawable drawable) {
