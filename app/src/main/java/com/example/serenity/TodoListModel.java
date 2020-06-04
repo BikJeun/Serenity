@@ -10,13 +10,15 @@ public class TodoListModel {
         OPENED
     }
 
+    String id;
     String name;
     String message;
     int level;
     STATE state = STATE.CLOSED;
     ArrayList<TodoListModel> models = new ArrayList<>();
 
-    public TodoListModel(String name, String message, int level) {
+    public TodoListModel(String id, String name, String message, int level) {
+        this.id = id;
         this.name = name;
         this.message = message;
         this.level = level;

@@ -2,12 +2,14 @@ package com.example.serenity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.annotation.LongDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -38,8 +40,9 @@ public class TodoListBottomSheet extends BottomSheetDialogFragment {
             public void onClick(View v) {
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 String key = title.push().getKey();
+                Log.d("creating data", "onClick: " + key);
 
-                TodoListModel todo = new TodoListModel(input.getText().toString(), message.getText().toString(), 2);
+                TodoListModel todo = new TodoListModel(key, input.getText().toString(), message.getText().toString(), 2);
 
                 HashMap<String, Object> childUpdates = new HashMap<>();
                 childUpdates.put(key, todo.toFireBaseObject());

@@ -38,12 +38,26 @@ import java.util.logging.Handler;
 public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHolder> {
     private Context context;
     private ArrayList<TodoListModel> models = new ArrayList<>();
+    private TodoListModel rootModel;
+    //ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemTouch);
+    //ItemTouchHelper itemTouchHelper.attachToRecyclerView(recyclerView);
 
 
     public TodoListAdapter(Context context, ArrayList<TodoListModel> models) {
         this.context = context;
         this.models = models;
 
+    }
+
+    public void removeItem(int position) {
+        models.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, models.size());
+    }
+    public void restoreItem(TodoListModel model, int position) {
+        models.add(position, model);
+        // notify item added by position
+        notifyItemInserted(position);
     }
 
     @NonNull
@@ -55,7 +69,7 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
 
-       TodoListModel model = models.get(position);
+        TodoListModel model = models.get(position);
         holder.textView.setText(model.name);
         holder.message.setText(model.message);
 
@@ -69,7 +83,7 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
         assert user != null;
         final String uid = user.getUid();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-         final DatabaseReference ref = database.getReference(model.name).child(uid);
+        final DatabaseReference ref = database.getReference(model.name).child(uid);
 
         switch (model.state) {
 
@@ -96,21 +110,22 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
             public void onClick(View v) {
 
                 int position = (int) v.getTag(R.string.position);
-                final TodoListModel rootModel = (TodoListModel) v.getTag(R.string.MODEL);
+                rootModel = (TodoListModel) v.getTag(R.string.MODEL);
 
                 ref.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         rootModel.models.clear();
                         for (DataSnapshot data : dataSnapshot.getChildren()) {
+                            String id = data.getKey();
                             String task = data.child("Task").getValue(String.class);
                             String msg = data.child("message").getValue(String.class);
-                            TodoListModel todo = new TodoListModel(task, msg, 2);
+                            TodoListModel todo = new TodoListModel(id, task, msg, 2);
 
                             rootModel.models.add(todo);
-                            }
-                            notifyDataSetChanged();
                         }
+                        notifyDataSetChanged();
+                    }
                     //}
 
                     @Override
@@ -119,7 +134,7 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
                     }
                 });
 
-                if (rootModel.models.isEmpty() && rootModel.level == 1 ) {
+                if (rootModel.models.isEmpty() && rootModel.level == 1) {
                     Toast.makeText(context, "EMPTY", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -172,35 +187,14 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
                 //Create BottomSheetDialog
                 TodoListBottomSheet bottomSheet = new TodoListBottomSheet();
                 bottomSheet.setTitle(ref);
-                bottomSheet.show(((FragmentActivity)context).getSupportFragmentManager(), "addItemsSheet");
+                bottomSheet.show(((FragmentActivity) context).getSupportFragmentManager(), "addItemsSheet");
             }
         });
-
-       /* ItemTouchHelper.SimpleCallback itemTouch = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                models.remove(viewHolder.getAdapterPosition());
-                deleteData(viewHolder, uid);
-                notifyDataSetChanged();
-
-            }
-        };*/
-
-
     }
 
-   /* private void deleteData(ViewHolder holder, String uid) {
-        String name = holder.textView.getText().toString();
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(name).child(uid);
+    public void deleteItem(int pos) {
 
-        ref.removeValue();
-
-    }*/
+    }
 
     @Override
     public int getItemCount() {
@@ -221,6 +215,8 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
         View viewDashed;
         ImageView addbutton;
         TextView empty;
+        //View background;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -254,5 +250,9 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
         DisplayMetrics metrics = resources.getDisplayMetrics();
         float dp = px / ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
         return dp;
+    }
+
+    public TodoListModel getRootModel() {
+        return rootModel;
     }
 }
