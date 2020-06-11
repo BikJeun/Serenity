@@ -26,6 +26,19 @@
     <string name="task">Task</string>
     <string name="description">Description</string>
     <string name="add">ADD</string>
-    <string name="delete" />
+    <string name="begin">BEGIN</string>
+
+    <string name="input_dialog_title">Enter event title</string>
+    <string name="empty_input_text">Text is empty</string>
+    <string name="dialog_delete_confirmation">Delete this event?</string>
+    <string name="delete">Delete</string>
+    <string name="close">Close</string>
+
+    <string name="instructions">Ready to Knock Procrastination?</string>
+    <string name="lock">LOCK</string>
+    <string name="unlock">UNLOCK</string>
+    <string name="startedtimer">LETS BE PRODUCTIVE!!!</string>
+    <string name="end">Well done in pulling through. Time for a good break</string>
+    <string name="giveup">Lets try not to give in to temptations next time :)</string>
 
 </resources>

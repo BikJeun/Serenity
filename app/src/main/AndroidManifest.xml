@@ -9,8 +9,9 @@
         android:roundIcon="@mipmap/serenity_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".LockApp"></activity>
         <activity android:name=".To_Do_List_Items" />
-        <activity android:name=".Calender" />
+        <activity android:name=".BottomNavi" />
         <activity android:name=".CreateAccount" />
         <activity android:name=".MainActivity">
             <intent-filter>

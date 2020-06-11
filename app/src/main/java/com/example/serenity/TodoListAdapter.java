@@ -49,12 +49,6 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
 
     }
 
-    public void restoreItem(TodoListModel model, int position) {
-        models.add(position, model);
-        // notify item added by position
-        notifyItemInserted(position);
-    }
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
