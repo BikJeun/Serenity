@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,8 +23,13 @@ public class Calender extends AppCompatActivity {
         BottomNavigationView btmNav = findViewById(R.id.bottom_navigation);
         btmNav.setOnNavigationItemSelectedListener(navListener);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CalenderFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CalendarViewWithNotesActivitySDK21_v2()).commit();
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -33,7 +39,7 @@ public class Calender extends AppCompatActivity {
 
             switch(item.getItemId()) {
                 case R.id.nav_calender:
-                    selectedFragment = new CalenderFragment();
+                    selectedFragment = new CalendarViewWithNotesActivitySDK21_v2();
                     break;
 
                 case R.id.nav_toDoList:

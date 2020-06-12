@@ -42,9 +42,9 @@ public class CreateAccount extends Activity {
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              String emailIn = email.getText().toString();
-              String pass1 = password1.getText().toString();
-              String pass2 = password2.getText().toString();
+                String emailIn = email.getText().toString();
+                String pass1 = password1.getText().toString();
+                String pass2 = password2.getText().toString();
 
                 if (emailIn.isEmpty()) {
                     email.setError("Please enter email");
@@ -54,35 +54,35 @@ public class CreateAccount extends Activity {
                     email.requestFocus();
                 }
 
-               if(pass1.isEmpty()) {
-                  password1.setError("Please enter password");
-                  password1.requestFocus();
-              } else if(pass2.isEmpty()) {
-                  password2.setError("Please enter password");
-                  password2.requestFocus();
-              } else if(!checkPassword()) {
-                  Toast.makeText(getApplicationContext(), "Input password are different", Toast.LENGTH_SHORT).show();
-              } else {
-                  auth.createUserWithEmailAndPassword(emailIn, pass2).addOnCompleteListener(CreateAccount.this, new OnCompleteListener<AuthResult>() {
-                      @Override
-                      public void onComplete(@NonNull Task<AuthResult> task) {
-                          if(!task.isSuccessful()) {
-                              Toast.makeText(getApplicationContext(), "SignUp Unsuccessful, Please Try Again :(", Toast.LENGTH_LONG).show();
-                          } else {
-                              Toast.makeText(getApplicationContext(), "SignUp Successful :)", Toast.LENGTH_LONG).show();
-                              FirebaseUser user = auth.getCurrentUser();
+                if(pass1.isEmpty()) {
+                    password1.setError("Please enter password");
+                    password1.requestFocus();
+                } else if(pass2.isEmpty()) {
+                    password2.setError("Please enter password");
+                    password2.requestFocus();
+                } else if(!checkPassword()) {
+                    Toast.makeText(getApplicationContext(), "Input password are different", Toast.LENGTH_SHORT).show();
+                } else {
+                    auth.createUserWithEmailAndPassword(emailIn, pass2).addOnCompleteListener(CreateAccount.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(!task.isSuccessful()) {
+                                Toast.makeText(getApplicationContext(), "SignUp Unsuccessful, Please Try Again :(", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "SignUp Successful :)", Toast.LENGTH_LONG).show();
+                                FirebaseUser user = auth.getCurrentUser();
 
-                              user.sendEmailVerification().addOnSuccessListener((new OnSuccessListener<Void>() {
-                                  @Override
-                                  public void onSuccess(Void aVoid) {
-                                      Toast.makeText(CreateAccount.this, "Verification Email Sent", Toast.LENGTH_SHORT).show();
-                                  }
-                              }));
-                              startActivity(new Intent(CreateAccount.this, MainActivity.class));
-                          }
-                      }
-                  });
-              }
+                                user.sendEmailVerification().addOnSuccessListener((new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Toast.makeText(CreateAccount.this, "Verification Email Sent", Toast.LENGTH_SHORT).show();
+                                    }
+                                }));
+                                startActivity(new Intent(CreateAccount.this, MainActivity.class));
+                            }
+                        }
+                    });
+                }
             }
         });
     }

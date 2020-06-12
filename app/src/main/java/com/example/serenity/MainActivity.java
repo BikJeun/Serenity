@@ -18,6 +18,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Calendar;
 import java.util.Objects;
 
 
@@ -44,7 +45,6 @@ public class MainActivity extends Activity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                auth.getCurrentUser().reload();
                 String email = usernameInput.getText().toString();
                 String pwd = passInput.getText().toString();
 
@@ -57,13 +57,13 @@ public class MainActivity extends Activity {
                     usernameInput.requestFocus();
                     return;
                 }
-
+                /*
                 assert user != null;
                 if (!user.isEmailVerified()) {
                     Toast.makeText(MainActivity.this, "Verify Email", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
+                */
 
                 if (pwd.isEmpty()) {
                     passInput.setError("Please enter password");
@@ -72,6 +72,8 @@ public class MainActivity extends Activity {
                 }
 
                 loginUser(email, pwd);
+                //auth.getCurrentUser().reload();
+
             }
         });
 
@@ -104,5 +106,8 @@ public class MainActivity extends Activity {
         });
     }
 
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

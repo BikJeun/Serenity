@@ -26,19 +26,31 @@
     <string name="task">Task</string>
     <string name="description">Description</string>
     <string name="add">ADD</string>
+    <string name="delete" />
     <string name="begin">BEGIN</string>
 
-    <string name="input_dialog_title">Enter event title</string>
-    <string name="empty_input_text">Text is empty</string>
-    <string name="dialog_delete_confirmation">Delete this event?</string>
-    <string name="delete">Delete</string>
+    <string name="save">Save</string>
     <string name="close">Close</string>
+    <string name="example_3_input_dialog_title">Enter event title</string>
+    <string name="example_3_empty_input_text">Text is empty</string>
+    <string name="example_3_dialog_delete_confirmation">Delete this event?</string>
+    <string name="double_dots" translatable="false">:</string>
+    <string name="cancel">cancel</string>
+    <string name="set">set</string>
+    <string name="no_events">no events</string>
+    <string name="event_default_title">My event</string>
+    <string name="title">Title</string>
+    <string name="completed">Completed</string>
+    <string name="new_event">New Event</string>
+    <string name="ok">ok</string>
+    <string name="today">today</string>
+    <string name="select_color_instruction">Select color of event</string>
 
-    <string name="instructions">Ready to Knock Procrastination?</string>
+    <string name="instructions">READY TO KNOCK PROCRASTINATION AWAY?</string>
     <string name="lock">LOCK</string>
     <string name="unlock">UNLOCK</string>
-    <string name="startedtimer">LETS BE PRODUCTIVE!!!</string>
-    <string name="end">Well done in pulling through. Time for a good break</string>
-    <string name="giveup">Lets try not to give in to temptations next time :)</string>
+    <string name="giveup">Lets try to be disciplined</string>
+    <string name="startedtimer">LETS BE PRODUCTIVE!!</string>
+    <string name="end">WELL DONE!! TIME FOR A BREAK.</string>
 
 </resources>

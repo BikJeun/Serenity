@@ -1,4 +1,4 @@
-package com.example.serenity;
+package com.example.serenity.data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,6 +9,8 @@ public class TodoListModel {
         CLOSED,
         OPENED
     }
+
+
 
     String id;
     String name;
@@ -22,6 +24,34 @@ public class TodoListModel {
         this.name = name;
         this.message = message;
         this.level = level;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public ArrayList<TodoListModel> getModels() {
+        return models;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public STATE getState() {
+        return state;
+    }
+
+    public void setState(STATE state) {
+        this.state = state;
     }
 
     public HashMap<String, String> toFireBaseObject() {

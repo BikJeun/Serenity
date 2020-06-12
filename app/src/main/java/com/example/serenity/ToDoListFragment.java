@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.serenity.data.TodoListModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -184,8 +185,8 @@ public class ToDoListFragment extends Fragment {
         }
 
         private void deleteData(TodoListModel parent, String uid, TodoListModel child) {
-            DatabaseReference ref = FirebaseDatabase.getInstance().getReference(parent.name).child(uid);
-            ref.child(child.id).removeValue();
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference(parent.getName()).child(uid);
+            ref.child(child.getId()).removeValue();
 
         }
     };

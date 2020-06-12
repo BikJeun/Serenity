@@ -21,6 +21,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.serenity.data.TodoListModel;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -59,22 +60,22 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
 
         TodoListModel model = models.get(position);
-        holder.textView.setText(model.name);
-        holder.message.setText(model.message);
+        holder.textView.setText(model.getName());
+        holder.message.setText(model.getMessage());
 
         holder.itemView.setTag(R.string.MODEL, model);
         holder.itemView.setTag(R.string.position, position);
 
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) holder.rlContent.getLayoutParams();
-        layoutParams.setMargins(((int) convertDpToPixel(20, context)) * model.level, layoutParams.topMargin, layoutParams.rightMargin, layoutParams.bottomMargin);
+        layoutParams.setMargins(((int) convertDpToPixel(20, context)) * model.getLevel(), layoutParams.topMargin, layoutParams.rightMargin, layoutParams.bottomMargin);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         assert user != null;
         final String uid = user.getUid();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference ref = database.getReference(model.name).child(uid);
+        final DatabaseReference ref = database.getReference(model.getName()).child(uid);
 
-        switch (model.state) {
+        switch (model.getState()) {
 
             case CLOSED:
                 holder.imgArrow.setImageResource(R.drawable.svg_arrow_right_filled);
@@ -84,7 +85,7 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
                 break;
         }
 
-        if (model.level == 2) {
+        if (model.getLevel() == 2) {
             holder.imgArrow.setVisibility(View.INVISIBLE);
             holder.viewDashed.setVisibility(View.VISIBLE);
             holder.addbutton.setVisibility(View.GONE);
@@ -104,14 +105,14 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
                 ref.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        rootModel.models.clear();
+                        rootModel.getModels().clear();
                         for (DataSnapshot data : dataSnapshot.getChildren()) {
                             String id = data.getKey();
                             String task = data.child("Task").getValue(String.class);
                             String msg = data.child("message").getValue(String.class);
                             TodoListModel todo = new TodoListModel(id, task, msg, 2);
 
-                            rootModel.models.add(todo);
+                            rootModel.getModels().add(todo);
                         }
                         notifyDataSetChanged();
                     }
@@ -123,19 +124,19 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
                     }
                 });
 
-                if (rootModel.models.isEmpty() && rootModel.level == 1) {
+                if (rootModel.getModels().isEmpty() && rootModel.getLevel() == 1) {
                     Toast.makeText(context, "EMPTY", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                switch (rootModel.state) {
+                switch (rootModel.getState()) {
 
                     case CLOSED:
-                        models.addAll(position + 1, rootModel.models);
-                        notifyItemRangeInserted(position + 1, rootModel.models.size());
-                        notifyItemRangeChanged(position + rootModel.models.size(), models.size() - (position + rootModel.models.size()));
+                        models.addAll(position + 1, rootModel.getModels());
+                        notifyItemRangeInserted(position + 1, rootModel.getModels().size());
+                        notifyItemRangeChanged(position + rootModel.getModels().size(), models.size() - (position + rootModel.getModels().size()));
                         notifyItemRangeChanged(position, models.size() - position);
-                        rootModel.state = TodoListModel.STATE.OPENED;
+                        rootModel.setState(TodoListModel.STATE.OPENED);
                         break;
 
                     case OPENED:
@@ -143,12 +144,12 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
                         int end = models.size();
                         for (int i = start; i < models.size(); i++) {
                             TodoListModel model1 = models.get(i);
-                            if (model1.level <= rootModel.level) {
+                            if (model1.getLevel() <= rootModel.getLevel()) {
                                 end = i;
                                 break;
                             } else {
-                                if (model1.state == TodoListModel.STATE.OPENED) {
-                                    model1.state = TodoListModel.STATE.CLOSED;
+                                if (model1.getState() == TodoListModel.STATE.OPENED) {
+                                    model1.setState(TodoListModel.STATE.CLOSED);
                                 }
                             }
                         }
@@ -160,7 +161,7 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
                             notifyItemRangeChanged(position, models.size() - position);
                         }
 
-                        rootModel.state = TodoListModel.STATE.CLOSED;
+                        rootModel.setState(TodoListModel.STATE.CLOSED);
                         break;
                 }
 
