@@ -17,16 +17,24 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
 import com.example.serenity.data.CalenderEventModel;
 import com.example.serenity.utils.ColorUtils;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 //@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class CreateEventActivity extends AppCompatActivity {
@@ -102,7 +110,7 @@ public class CreateEventActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_delete: {
-                delete();
+                delete(extractEventFromIntent(getIntent()));
                 return true;
             }
             case android.R.id.home: {
@@ -257,8 +265,16 @@ public class CreateEventActivity extends AppCompatActivity {
         }
     }
 
-    private void delete() {
+    private void delete(CalenderEventModel event) {
         Log.e(getClass().getSimpleName(), "delete");
+        Log.d("calendar event deletion", "delete: " + getClass().getSimpleName());
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        assert user != null;
+        final String uid = user.getUid();
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference ref = database.getReference("Calendar Events").child(uid);
+        ref.child(event.getID()).removeValue();
 
         setResult(RESULT_OK, new Intent()
                 .putExtra(INTENT_EXTRA_ACTION, ACTION_DELETE)
@@ -270,18 +286,42 @@ public class CreateEventActivity extends AppCompatActivity {
 
     private void save() {
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        assert user != null;
+        final String uid = user.getUid();
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference ref = database.getReference("Calendar Events").child(uid);
+        String key = ref.push().getKey();
+
         int action = mOriginalEvent != null ? ACTION_EDIT : ACTION_CREATE;
-        String id = mOriginalEvent != null ? mOriginalEvent.getID() : generateID();
+        String id = mOriginalEvent != null ? mOriginalEvent.getID() : key;
         String rawTitle = mTitleView.getText().toString().trim();
 
-        mOriginalEvent = new CalenderEventModel(
-                id,
-                rawTitle.isEmpty() ? null : rawTitle,
-                mCalendar,
-                mColor,
-                mIsCompleteCheckBox.isChecked()
-        );
-
+        if(mOriginalEvent == null) {
+            mOriginalEvent = new CalenderEventModel(
+                    id,
+                    rawTitle.isEmpty() ? null : rawTitle,
+                    mCalendar,
+                    mColor,
+                    mIsCompleteCheckBox.isChecked()
+            );
+            Map<String, Object> childUpdate = new HashMap<>();
+            childUpdate.put(key, mOriginalEvent.toFirebaseObject());
+            ref.updateChildren(childUpdate, new DatabaseReference.CompletionListener() {
+                @Override
+                public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                    if (databaseError == null) {
+                        return;
+                    }
+                }
+            });
+        } else {
+            mOriginalEvent.setmTitle(rawTitle.isEmpty() ? null : rawTitle);
+            mOriginalEvent.setmDate(mCalendar);
+            mOriginalEvent.setmColor(mColor);
+            mOriginalEvent.setCompleted(mIsCompleteCheckBox.isChecked());
+            ref.child(mOriginalEvent.getID()).setValue(mOriginalEvent);
+        }
 
         setResult(RESULT_OK, new Intent()
                 .putExtra(INTENT_EXTRA_ACTION, action)
@@ -308,7 +348,7 @@ public class CreateEventActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private static String generateID() {
+   /* private static String generateID() {
         return Long.toString(System.currentTimeMillis());
-    }
+    }*/
 }

@@ -27,7 +27,7 @@ public class LockApp extends Activity implements LockScreenUtils.OnLockStatusCha
     private Button btnUnlock;
     private Button BtnLock;
     private TextView timer;
-    private TextView instuctions;
+    private TextView instructions;
 
     private CountDownTimer countDownTimer;
     private long timeLeftInMilliSeconds = 1200000;
@@ -90,7 +90,7 @@ public class LockApp extends Activity implements LockScreenUtils.OnLockStatusCha
 
     private void init() {
         mLockScreenUtils = new LockScreenUtils();
-        instuctions = findViewById(R.id.tvInstructions);
+        instructions = findViewById(R.id.tvInstructions);
         btnUnlock = (Button) findViewById(R.id.btnUnlock);
         btnUnlock.setOnClickListener(new View.OnClickListener() {
 
@@ -99,7 +99,7 @@ public class LockApp extends Activity implements LockScreenUtils.OnLockStatusCha
                 // unlock home button and then screen on button press
                 unlockHomeButton();
                 timer.setVisibility(View.INVISIBLE);
-                instuctions.setText(getResources().getString(R.string.giveup));
+                instructions.setText(getResources().getString(R.string.giveup));
                 unlockDevice();
             }
         });
@@ -108,7 +108,7 @@ public class LockApp extends Activity implements LockScreenUtils.OnLockStatusCha
         BtnLock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                instuctions.setText(getResources().getString(R.string.startedtimer));
+                instructions.setText(getResources().getString(R.string.startedtimer));
                 timer.setVisibility(View.VISIBLE);
                 startCountDown();
 
@@ -126,7 +126,7 @@ public class LockApp extends Activity implements LockScreenUtils.OnLockStatusCha
 
             @Override
             public void onFinish() {
-                instuctions.setText(getResources().getString(R.string.end));
+                instructions.setText(getResources().getString(R.string.end));
                 unlockDevice();
 
             }

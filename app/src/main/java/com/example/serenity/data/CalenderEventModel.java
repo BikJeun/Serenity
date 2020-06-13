@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CalenderEventModel implements Parcelable {
 
@@ -19,6 +21,26 @@ public class CalenderEventModel implements Parcelable {
         mDate = date;
         mColor = color;
         this.isCompleted = isCompleted;
+    }
+
+    public void setmID(String mID) {
+        this.mID = mID;
+    }
+
+    public void setmTitle(String mTitle) {
+        this.mTitle = mTitle;
+    }
+
+    public void setmDate(Calendar mDate) {
+        this.mDate = mDate;
+    }
+
+    public void setmColor(int mColor) {
+        this.mColor = mColor;
+    }
+
+    public void setCompleted(boolean completed) {
+        isCompleted = completed;
     }
 
     public String getID() {
@@ -39,6 +61,17 @@ public class CalenderEventModel implements Parcelable {
 
     public boolean isCompleted() {
         return isCompleted;
+    }
+
+    public Map<String, Object> toFirebaseObject() {
+        HashMap<String, Object> event = new HashMap<>();
+        event.put("mid", mID);
+        event.put("title", mTitle);
+        event.put("date", mDate);
+        event.put("color", mColor);
+        event.put("completed", isCompleted);
+
+        return event;
     }
 
     protected CalenderEventModel(Parcel in) {

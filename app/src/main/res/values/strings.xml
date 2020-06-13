@@ -26,7 +26,7 @@
     <string name="task">Task</string>
     <string name="description">Description</string>
     <string name="add">ADD</string>
-    <string name="delete" />
+    <string name="delete">DELETE</string>
     <string name="begin">BEGIN</string>
 
     <string name="save">Save</string>

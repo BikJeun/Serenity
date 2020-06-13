@@ -322,7 +322,10 @@ public class CalendarDialog {
             View v = vi.inflate(R.layout.list_item_calendar_event, parent, false);
             return new ViewHolder(v);
         }
-
+/* needs database
+*
+*
+ */
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             CalenderEventModel event = mCalendarEvents.get(position);
