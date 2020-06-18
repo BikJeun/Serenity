@@ -8,20 +8,23 @@
     <RelativeLayout
         android:id="@+id/rlContent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+        android:layout_height="60dp"
+        android:layout_marginTop="10dp"
+        >
 
         <RelativeLayout
             android:id="@+id/rlIndicator"
             android:layout_width="16dp"
+            android:layout_height="16dp"
             android:layout_centerVertical="true"
-            android:layout_height="16dp">
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            >
 
             <ImageView
                 android:id="@+id/imgArrow"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_centerVertical="true"
                 android:src="@drawable/svg_arrow_right_filled"
                 />
 
@@ -31,7 +34,8 @@
                 android:layout_height="1dp"
                 android:layout_centerVertical="true"
                 android:layout_margin="6dp"
-                android:background="#b5000000" />
+                android:background="#b5000000"
+                />
         </RelativeLayout>
 
         <RelativeLayout
@@ -39,22 +43,27 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="15dp"
-            android:layout_toEndOf="@+id/rlIndicator"
-            android:orientation="vertical">
+            android:layout_marginEnd="15dp"
+            android:orientation="vertical"
+            >
 
             <TextView
                 android:id="@+id/tvName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:textColor="#ca000000"
-                android:textSize="30sp" />
+                android:layout_centerVertical="true"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:fontFamily="@font/roboto_light"
+                android:textColor="#36353E"
+                android:textSize="30sp"
+                />
 
             <TextView
                 android:id="@+id/tvDesignation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
+                android:fontFamily="@font/roboto_light"
                 android:textColor="#30000000"
                 android:textStyle="italic"
                 android:textSize="20sp"
@@ -66,7 +75,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_centerHorizontal="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="11dp"
                 android:layout_marginRight="15dp"
@@ -78,6 +88,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="11dp"
