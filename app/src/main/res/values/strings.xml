@@ -46,12 +46,11 @@
     <string name="today">today</string>
     <string name="select_color_instruction">Select color of event</string>
 
-    <string name="instructions">READY TO KNOCK PROCRASTINATION AWAY?</string>
     <string name="lock">LOCK</string>
     <string name="unlock">UNLOCK</string>
-    <string name="giveup">Lets try to be disciplined</string>
-    <string name="startedtimer">LETS BE PRODUCTIVE!!</string>
-    <string name="end">WELL DONE!! TIME FOR A BREAK.</string>
+    <string name="giveup">Let\'s try to be disciplined.</string>
+    <string name="startedtimer">Let\'s be productive!</string>
+    <string name="end">Well done! Time for a well-deserved break.</string>
     <string name="s_e_r_e_n_i_t_y">S E R E N I T Y</string>
     <string name="to_do">To-Do</string>
     <string name="don_t_have_an_account_sign_up_here">Don\'t have an account? Sign up here!</string>

@@ -1,51 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@color/yellow"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin" >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/todo_background">
+
+    <TextView
+        android:id="@+id/countdown_background"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@id/title"
+        android:layout_marginTop="70dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="#66FFFFFF" />
 
     <TextView
         android:id="@+id/tvInstructions"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/instructions"
-        android:textAppearance="@android:style/TextAppearance.Medium"
-        android:textColor="@color/black" />
-
-    <Button
-        android:id="@+id/btnUnlock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="15dp"
-        android:layout_below="@id/tvInstructions"
+        android:layout_below="@id/title"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:text="@string/unlock" />
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/roboto_light"
+        android:text="Ready?"
+        android:textColor="#313131"
+        android:textSize="25sp" />
 
     <Button
         android:id="@+id/btnLock"
-        android:layout_width="wrap_content"
+        android:layout_width="85dp"
         android:layout_height="wrap_content"
-        android:padding="15dp"
-        android:layout_below="@+id/tvInstructions"
-        android:layout_centerHorizontal="true"
-        android:text="@string/lock" />
+        android:layout_below="@+id/countdown_background"
+        android:layout_marginStart="110dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/roboto_light"
+        android:text="@string/lock"
+        />
+
+    <Button
+        android:id="@+id/btnUnlock"
+        android:layout_width="85dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/countdown_background"
+        android:layout_toRightOf="@id/btnLock"
+        android:layout_toEndOf="@id/btnLock"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/unlock"
+        android:fontFamily="@font/roboto_light"
+        />
 
     <TextView
         android:id="@+id/countdown"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="260dp"
+        android:fontFamily="@font/roboto_light"
         android:text="10:00"
-        android:textSize="50sp"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:textColor="#313131"
+        android:textSize="80sp" />
 
 
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="90dp"
+        android:fontFamily="@font/roboto_light"
+        android:text="@string/s_e_r_e_n_i_t_y"
+        android:textColor="#313131"
+        android:textSize="55sp" />
 
+    <TextView
+        android:id="@+id/timeLeftText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/countdown"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/roboto_light"
+        android:text="Time left until completion of this task"
+        android:textColor="#313131"
+        android:textSize="18sp" />
 
 
 </RelativeLayout>
+
