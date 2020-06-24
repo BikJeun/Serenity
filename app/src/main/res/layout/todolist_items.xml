@@ -1,32 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    >
 
 
     <RelativeLayout
         android:id="@+id/rlContent"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
-        >
+        android:layout_marginEnd="5dp"
+        android:background="#65EDC1D5">
 
         <RelativeLayout
             android:id="@+id/rlIndicator"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
             android:layout_centerVertical="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            >
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp">
 
             <ImageView
                 android:id="@+id/imgArrow"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/next"
-                />
+                android:src="@drawable/next" />
 
             <View
                 android:id="@+id/viewDashed"
@@ -34,8 +35,7 @@
                 android:layout_height="1dp"
                 android:layout_centerVertical="true"
                 android:layout_margin="6dp"
-                android:background="#b5000000"
-                />
+                android:background="#b5000000" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -44,31 +44,28 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tvName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="30dp"
-                android:layout_marginEnd="30dp"
+                android:layout_marginStart="45dp"
+                android:layout_marginEnd="45dp"
                 android:fontFamily="@font/roboto_light"
                 android:textColor="#36353E"
-                android:textSize="30sp"
-                />
+                android:textSize="30sp" />
 
             <TextView
                 android:id="@+id/tvDesignation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/tvName"
                 android:fontFamily="@font/roboto_light"
                 android:textColor="#30000000"
-                android:textStyle="italic"
                 android:textSize="20sp"
-                android:layout_below="@id/tvName"
-                />
+                android:textStyle="italic" />
 
             <ImageView
                 android:id="@+id/additems"
@@ -91,8 +88,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="11dp"
-                android:layout_marginRight="20dp"
-                />
+                android:layout_marginRight="20dp" />
 
 
         </RelativeLayout>

@@ -3,20 +3,18 @@
     xmlns:tools = "http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height = "match_parent"
-    android:background="@drawable/sunset_dave"
+    android:background="@drawable/unsplash_sunset_dave"
     tools:context = ".MainActivity">
 
     <TextView
         android:id="@+id/appName"
         android:layout_width="wrap_content"
-
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"
         android:fontFamily="@font/roboto_light"
-
         android:text="@string/s_e_r_e_n_i_t_y"
-        android:textSize="50sp" />
+        android:textSize="55sp" />
 
 
     <EditText
@@ -29,9 +27,9 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="110dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginEnd="32dp"
 
         android:autofillHints="Username"
         android:cursorVisible="true"
@@ -52,8 +50,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
 
         android:ems="10"
         android:fontFamily="sans-serif-light"
