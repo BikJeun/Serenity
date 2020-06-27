@@ -78,10 +78,10 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
         switch (model.getState()) {
 
             case CLOSED:
-                holder.imgArrow.setImageResource(R.drawable.svg_arrow_right_filled);
+                holder.imgArrow.setImageResource(R.drawable.next);
                 break;
             case OPENED:
-                holder.imgArrow.setImageResource(R.drawable.svg_arrow_down_filled);
+                holder.imgArrow.setImageResource(R.drawable.down);
                 break;
         }
 

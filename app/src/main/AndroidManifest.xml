@@ -4,6 +4,7 @@
     package="com.example.serenity">
     <uses-sdk tools:overrideLibrary="org.hugoandrade.calendarviewlib"/>
 
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -78,6 +79,9 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
 
     </application>
 
