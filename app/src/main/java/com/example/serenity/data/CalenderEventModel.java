@@ -3,6 +3,8 @@ package com.example.serenity.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.database.ServerValue;
+
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +16,10 @@ public class CalenderEventModel implements Parcelable {
     private Calendar mDate;
     private int mColor;
     private boolean isCompleted;
+
+    public CalenderEventModel() {
+
+    }
 
     public CalenderEventModel(String id, String title, Calendar date, int color, boolean isCompleted) {
         mID = id;
@@ -67,7 +73,7 @@ public class CalenderEventModel implements Parcelable {
         HashMap<String, Object> event = new HashMap<>();
         event.put("mid", mID);
         event.put("title", mTitle);
-        event.put("date", mDate);
+        event.put("date", mDate.getTimeInMillis());
         event.put("color", mColor);
         event.put("completed", isCompleted);
 

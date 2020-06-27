@@ -22,8 +22,9 @@ import com.example.serenity.utils.LockScreenUtils;
 
 import java.util.Locale;
 
-public class LockApp extends Activity implements LockScreenUtils.OnLockStatusChangedListener{
+public class LockApp extends Activity implements LockScreenUtils.OnLockStatusChangedListener {
 
+    private static boolean cheated = false;
     private Button btnUnlock;
     private Button BtnLock;
     private TextView timer;
@@ -33,6 +34,7 @@ public class LockApp extends Activity implements LockScreenUtils.OnLockStatusCha
     private long timeLeftInMilliSeconds = 1200000;
 
     private LockScreenUtils mLockScreenUtils;
+
 
     /*@Override
     public void onAttachedToWindow() {
@@ -97,6 +99,7 @@ public class LockApp extends Activity implements LockScreenUtils.OnLockStatusCha
             @Override
             public void onClick(View v) {
                 // unlock home button and then screen on button press
+                cheated = true;
                 unlockHomeButton();
                 timer.setVisibility(View.INVISIBLE);
                 instructions.setText(getResources().getString(R.string.giveup));
@@ -109,6 +112,7 @@ public class LockApp extends Activity implements LockScreenUtils.OnLockStatusCha
             @Override
             public void onClick(View v) {
                 instructions.setText(getResources().getString(R.string.startedtimer));
+                BtnLock.setVisibility(View.GONE);
                 timer.setVisibility(View.VISIBLE);
                 startCountDown();
 
@@ -241,5 +245,7 @@ public class LockApp extends Activity implements LockScreenUtils.OnLockStatusCha
     {
         finish();
     }
+
+    public static boolean getCheated() { return cheated; }
 
 }

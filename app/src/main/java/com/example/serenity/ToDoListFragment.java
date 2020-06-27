@@ -1,5 +1,6 @@
 package com.example.serenity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -106,15 +107,15 @@ public class ToDoListFragment extends Fragment {
                     snackbar.setAction("UNDO", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            confirm[0] = false;
+                            confirm[0] = true;
                         }
                     });
                     snackbar.show();
-                    if (confirm[0] == false) {
+                    if (confirm[0] == true) {
                         return;
                     }
                     deleteData(parent, uid, deletedModel);
-
+                    listAdapter.notifyItemChanged(position);
                     listAdapter.notifyItemRemoved(position);
                     break;
 
@@ -130,20 +131,25 @@ public class ToDoListFragment extends Fragment {
                     snackbar2.setAction("UNDO", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            confirm2[0] = false;
+                            confirm2[0] = true;
                         }
                     });
                     snackbar2.show();
-                    if (confirm2[0] == false) {
+                    if (confirm2[0] == true) {
                         return;
                     }
-                    deleteData(parent2, uid, deletedModel2);
 
+                    if(!LockApp.getCheated()) {
+                        deleteData(parent2, uid, deletedModel2);
+                    }
+
+                    listAdapter.notifyItemChanged(position2);
                     listAdapter.notifyItemRemoved(position2);
                     break;
             }
 
         }
+
 
         @Override
         public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
@@ -158,7 +164,7 @@ public class ToDoListFragment extends Fragment {
                     p.setColor(Color.parseColor("#388E3C"));
                     RectF background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX, (float) itemView.getBottom());
                     c.drawRect(background, p);
-                   // icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_delete_forever_black_24dp);
+                    // icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_delete_forever_black_24dp);
                     Drawable icons = getResources().getDrawable(R.drawable.ic_done_black_24dp);
                     icon = drawableToBitmap(icons);
                     RectF icon_dest = new RectF((float) itemView.getLeft() + width, (float) itemView.getTop() + width, (float) itemView.getLeft() + 2 * width, (float) itemView.getBottom() - width);
@@ -168,7 +174,7 @@ public class ToDoListFragment extends Fragment {
                     paint.setTextSize(50);
                     paint.setTextAlign(Paint.Align.CENTER);
                     String begin = itemView.getContext().getResources().getString(R.string.begin);
-                    c.drawText(begin,  itemView.getLeft() + 2 * width - 30, itemView.getBottom() - width + 35, paint);
+                    c.drawText(begin, itemView.getLeft() + 2 * width - 30, itemView.getBottom() - width + 35, paint);
                 } else {
                     p.setColor(Color.parseColor("#D32F2F"));
                     RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(), (float) itemView.getRight(), (float) itemView.getBottom());
@@ -183,13 +189,15 @@ public class ToDoListFragment extends Fragment {
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
 
         }
-
-        private void deleteData(TodoListModel parent, String uid, TodoListModel child) {
-            DatabaseReference ref = FirebaseDatabase.getInstance().getReference(parent.getName()).child(uid);
-            ref.child(child.getId()).removeValue();
-
-        }
     };
+
+    @SuppressLint("LongLogTag")
+    private static void deleteData(TodoListModel parent, String uid, TodoListModel child) {
+        Log.d("deleting to do list items", "deleteData: ");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(parent.getName()).child(uid);
+        ref.child(child.getId()).removeValue();
+
+    }
 
     public static Bitmap drawableToBitmap (Drawable drawable) {
 
