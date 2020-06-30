@@ -78,7 +78,6 @@ public class CalendarViewWithNotesActivitySDK21_v2 extends Fragment {
         View v = inflater.inflate(R.layout.activity_calendar_view_with_notes_sdk_21, container, false);
 
         //getFirebaseData();
-        Log.d("checking", mEventList.toString());
 
         //mShortMonths = new DateFormatSymbols().getShortMonths();
 
@@ -106,7 +105,7 @@ public class CalendarViewWithNotesActivitySDK21_v2 extends Fragment {
 
                     CalenderEventModel model = new CalenderEventModel(id,title,date,color,complete);
                     mEventList.add(model);
-
+                    Log.d("checking on firebase", "" + mEventList.size());
                     mCalendarView.addCalendarObject(parseCalendarObject(model));
                     mCalendarDialog.setEventList(mEventList);
                 }
@@ -126,7 +125,7 @@ public class CalendarViewWithNotesActivitySDK21_v2 extends Fragment {
         Log.d("create", "onCreate: ");
 
         getFirebaseData();
-
+        Log.d("checking", "" + mEventList.size());
         mShortMonths = new DateFormatSymbols().getShortMonths();
 
         //initializeUI();
@@ -241,6 +240,8 @@ public class CalendarViewWithNotesActivitySDK21_v2 extends Fragment {
             if (resultCode == RESULT_OK) {
                 int action = CreateEventActivity.extractActionFromIntent(data);
                 CalenderEventModel event = CreateEventActivity.extractEventFromIntent(data);
+                Log.d("Checking on results", "onActivityResult: " + event.getTitle());
+                Log.d("checking on results", "" + mEventList.size());
                 //ref.addChildEventListener(childEventListener);
 
                 switch (action) {

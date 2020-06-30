@@ -10,6 +10,8 @@ import android.os.Handler;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.util.Pair;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -322,13 +324,13 @@ public class CalendarDialog {
             View v = vi.inflate(R.layout.list_item_calendar_event, parent, false);
             return new ViewHolder(v);
         }
-/* needs database
-*
-*
- */
+
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             CalenderEventModel event = mCalendarEvents.get(position);
+            Log.d("Dialog", "onBindViewHolder: "+ event.getTitle());
+
+            //holder.itemView.setTag(R.string.position, position);
 
             String defaultTitle = holder.itemView.getContext().getString(R.string.event_default_title);
             String title = event.getTitle() == null ? defaultTitle : event.getTitle();
@@ -336,6 +338,7 @@ public class CalendarDialog {
             holder.tvEventName.setText(title);
             holder.rclEventIcon.setBackgroundColor(event.getColor());
             holder.tvEventStatus.setText(timeFormat.format(event.getDate().getTime()));
+
         }
 
         @Override
@@ -359,7 +362,7 @@ public class CalendarDialog {
             @Override
             public void onClick(View v) {
                 if (mListener != null)
-                    mListener.onEventClick(mEventList.get(getAdapterPosition()));
+                    mListener.onEventClick(mCalendarEvents.get(getAdapterPosition()));
             }
         }
     }

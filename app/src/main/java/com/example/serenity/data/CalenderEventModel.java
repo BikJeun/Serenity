@@ -17,9 +17,6 @@ public class CalenderEventModel implements Parcelable {
     private int mColor;
     private boolean isCompleted;
 
-    public CalenderEventModel() {
-
-    }
 
     public CalenderEventModel(String id, String title, Calendar date, int color, boolean isCompleted) {
         mID = id;

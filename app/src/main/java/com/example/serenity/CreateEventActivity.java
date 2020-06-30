@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
@@ -188,6 +189,7 @@ public class CreateEventActivity extends AppCompatActivity {
         mDateTextView.setText(dateFormat.format(mCalendar.getTime()));
         mDateTextView.setOnClickListener(new View.OnClickListener() {
 
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @SuppressLint("RestrictedApi")
             @Override
             public void onClick(View v) {
@@ -320,7 +322,8 @@ public class CreateEventActivity extends AppCompatActivity {
             mOriginalEvent.setmDate(mCalendar);
             mOriginalEvent.setmColor(mColor);
             mOriginalEvent.setCompleted(mIsCompleteCheckBox.isChecked());
-            ref.child(mOriginalEvent.getID()).setValue(mOriginalEvent);
+
+            ref.child(mOriginalEvent.getID()).setValue(mOriginalEvent.toFirebaseObject());
         }
 
         setResult(RESULT_OK, new Intent()
