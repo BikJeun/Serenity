@@ -31,7 +31,7 @@ public class LockApp extends Activity implements LockScreenUtils.OnLockStatusCha
     private TextView instructions;
 
     private CountDownTimer countDownTimer;
-    private long timeLeftInMilliSeconds = 1200000;
+    private long timeLeftInMilliSeconds = 1200000; //1200000
 
     private LockScreenUtils mLockScreenUtils;
 

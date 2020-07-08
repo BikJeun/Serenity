@@ -33,7 +33,7 @@
         android:id="@+id/email"
         android:layout_width="383dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/CreateText"
+        android:layout_below="@id/User"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="15dp"
@@ -91,5 +91,21 @@
         android:layout_marginTop="35dp"
         android:fontFamily="sans-serif-light"
         android:text="@string/create" />
+
+    <EditText
+        android:id="@+id/User"
+        android:layout_width="383dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/CreateText"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="20dp"
+        android:fontFamily="sans-serif-light"
+        android:hint="@string/user"
+        android:paddingStart="20dp"
+        android:paddingLeft="20dp"
+        android:paddingEnd="20dp"
+        android:textColorHint="#313131" />
 
 </RelativeLayout>

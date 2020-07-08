@@ -275,7 +275,7 @@ public class CreateEventActivity extends AppCompatActivity {
         assert user != null;
         final String uid = user.getUid();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference ref = database.getReference("Calendar Events").child(uid);
+        final DatabaseReference ref = database.getReference(uid).child("Calendar Events");
         ref.child(event.getID()).removeValue();
 
         setResult(RESULT_OK, new Intent()
@@ -292,7 +292,7 @@ public class CreateEventActivity extends AppCompatActivity {
         assert user != null;
         final String uid = user.getUid();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference ref = database.getReference("Calendar Events").child(uid);
+        final DatabaseReference ref = database.getReference(uid).child("Calendar Events");
         String key = ref.push().getKey();
 
         int action = mOriginalEvent != null ? ACTION_EDIT : ACTION_CREATE;

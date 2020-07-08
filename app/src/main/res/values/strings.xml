@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Serenity</string>
     <string name="login">Login</string>
     <string name="serenity">SERENITY</string>
@@ -11,6 +11,7 @@
     <string name="email">Email</string>
     <string name="enter_password">Enter password</string>
     <string name="re_enter_password">Re-enter password</string>
+    <string name="user">Username</string>
     <string name="create">Create</string>
     <string name="title_activity_calender">Calender</string>
     <string name="title_home">Home</string>
@@ -53,5 +54,31 @@
     <string name="end">Well done! Time for a well-deserved break.</string>
     <string name="s_e_r_e_n_i_t_y">S E R E N I T Y</string>
     <string name="don_t_have_an_account_sign_up_here">Don\'t have an account? Sign up here!</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="edit">edit</string>
+    <string name="name">Name</string>
+    <string name="emailInSettings">Email</string>
+    <string name="editAccount">Edit Account</string>
+    <string name="resetPassword">Reset Password</string>
+    <string name="deleteAccount">Delete Account</string>
+    <string name="signOut">Sign Out</string>
+    <string name="are_you_sure">Are you sure...</string>
+    <string name="yes">YES :(</string>
+    <string name="no">NO :)</string>
 
 </resources>

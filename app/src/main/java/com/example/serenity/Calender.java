@@ -47,7 +47,7 @@ public class Calender extends AppCompatActivity {
                     break;
 
                 case R.id.nav_settings:
-                    selectedFragment = new SettingsFragment();
+                    selectedFragment = new SettingsActivity();
                     break;
             }
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();

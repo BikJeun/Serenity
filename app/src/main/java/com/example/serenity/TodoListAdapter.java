@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.serenity.data.TodoListModel;
+import com.example.serenity.uihelpers.OnSwipeTouchListener;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -73,7 +74,7 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
         assert user != null;
         final String uid = user.getUid();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference ref = database.getReference(model.getName()).child(uid);
+        final DatabaseReference ref = database.getReference(uid).child(model.getName());
 
         switch (model.getState()) {
 
@@ -107,6 +108,7 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         rootModel.getModels().clear();
                         for (DataSnapshot data : dataSnapshot.getChildren()) {
+                            Log.d("creating data", "onClick: " + data);
                             String id = data.getKey();
                             String task = data.child("Task").getValue(String.class);
                             String msg = data.child("message").getValue(String.class);
@@ -165,15 +167,26 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
                         break;
                 }
 
+                holder.itemView.setOnTouchListener(new OnSwipeTouchListener(context) {
+                    public void onSwipeLeft() {
+                        Toast.makeText(context, "delete",Toast.LENGTH_SHORT).show();
+                    }
+
+                    public void onSwipeRight() {
+                        Toast.makeText(context, "timer", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
 
             }
         });
+
 
         holder.addbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String name = holder.textView.getText().toString();
-                DatabaseReference ref = database.getReference(name).child(uid);
+                DatabaseReference ref = database.getReference(uid).child(name);
                 //Create BottomSheetDialog
                 TodoListBottomSheet bottomSheet = new TodoListBottomSheet();
                 bottomSheet.setTitle(ref);
@@ -193,7 +206,7 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
         notifyDataSetChanged();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         RelativeLayout rlContent;
         TextView textView;
@@ -214,8 +227,46 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
             viewDashed = itemView.findViewById(R.id.viewDashed);
             addbutton = (ImageView) itemView.findViewById(R.id.additems);
             empty = (TextView) itemView.findViewById(R.id.empty);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            assert user != null;
+            final String uid = user.getUid();
+            final FirebaseDatabase database = FirebaseDatabase.getInstance();
+            final DatabaseReference ref = database.getReference(uid).child(models.get(getAdapterPosition()).getName());
+
+            ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    rootModel.getModels().clear();
+                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                        String id = data.getKey();
+                        String task = data.child("Task").getValue(String.class);
+                        String msg = data.child("message").getValue(String.class);
+                        TodoListModel todo = new TodoListModel(id, task, msg, 2);
+
+                        rootModel.getModels().add(todo);
+                    }
+                    notifyDataSetChanged();
+                }
+                //}
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
         }
     }
+
+    public static void removeTaskObject () {
+
+    }
+
 
 
     public static float convertDpToPixel(float dp, Context context) {

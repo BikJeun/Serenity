@@ -1,10 +1,8 @@
 package com.example.serenity;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -16,26 +14,23 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListAdapter;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import androidx.annotation.LongDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.serenity.data.TodoListModel;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -43,10 +38,11 @@ public class ToDoListFragment extends Fragment {
 
     ArrayList<TodoListModel> models = new ArrayList<>();
     TodoListAdapter listAdapter;
-    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    final String uid = user.getUid();
     private Paint p = new Paint();
 
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    final String uid = user.getUid();
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     @Nullable
     @Override
@@ -69,10 +65,6 @@ public class ToDoListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        final String uid = user.getUid();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-
         TodoListModel today = new TodoListModel("","TODAY", "", 1);
         TodoListModel tmr = new TodoListModel("","TOMORROW", "", 1);
         TodoListModel upcoming = new TodoListModel("","UPCOMING", "", 1);
@@ -85,6 +77,32 @@ public class ToDoListFragment extends Fragment {
         models.add(tmr);
         models.add(upcoming);
 
+        getFirebaseData(1, database.getReference("TODAY").child(uid));
+        getFirebaseData(2, database.getReference("TOMORROW").child(uid));
+        getFirebaseData(3, database.getReference("UPCOMING").child(uid));
+
+    }
+
+    private void getFirebaseData(final int num, final DatabaseReference ref) {
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                models.get(num - 1).getModels().clear();
+                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                    String id = ds.getKey();
+                    String task = ds.child("Task").getValue(String.class);
+                    String msg = ds.child("message").getValue(String.class);
+                    TodoListModel todo = new TodoListModel(id, task, msg, 2);
+
+                    models.get(num - 1).getModels().add(todo);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     ItemTouchHelper.SimpleCallback itemTouch = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -117,6 +135,7 @@ public class ToDoListFragment extends Fragment {
                     deleteData(parent, uid, deletedModel);
                     listAdapter.notifyItemChanged(position);
                     listAdapter.notifyItemRemoved(position);
+                    listAdapter.notifyDataSetChanged();
                     break;
 
                 case ItemTouchHelper.RIGHT:
@@ -145,6 +164,7 @@ public class ToDoListFragment extends Fragment {
 
                     listAdapter.notifyItemChanged(position2);
                     listAdapter.notifyItemRemoved(position2);
+                    listAdapter.notifyDataSetChanged();
                     break;
             }
 
@@ -191,9 +211,7 @@ public class ToDoListFragment extends Fragment {
         }
     };
 
-    @SuppressLint("LongLogTag")
-    private static void deleteData(TodoListModel parent, String uid, TodoListModel child) {
-        Log.d("deleting to do list items", "deleteData: ");
+    public void deleteData(TodoListModel parent, String uid, TodoListModel child) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference(parent.getName()).child(uid);
         ref.child(child.getId()).removeValue();
 

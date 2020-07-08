@@ -64,7 +64,7 @@ public class CalendarViewWithNotesActivitySDK21_v2 extends Fragment {
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     final String uid = user.getUid();
     final FirebaseDatabase db = FirebaseDatabase.getInstance();
-    final DatabaseReference ref = db.getReference("Calendar Events").child(uid);
+    final DatabaseReference ref = db.getReference(uid).child("Calendar Events");
 
     public static Intent makeIntent(Context context) {
         return new Intent(context, CalendarViewWithNotesActivitySDK21_v2.class);
