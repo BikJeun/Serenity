@@ -84,7 +84,6 @@ public class CreateAccount extends Activity {
                             if(!task.isSuccessful()) {
                                 Toast.makeText(getApplicationContext(), "Account already exist", Toast.LENGTH_LONG).show();
                             } else {
-                                Toast.makeText(getApplicationContext(), "SignUp Successful :)", Toast.LENGTH_LONG).show();
                                 FirebaseUser user = auth.getCurrentUser();
 
                                 saveProfile(user.getUid());
@@ -103,7 +102,7 @@ public class CreateAccount extends Activity {
             }
 
             private void saveProfile(String uid) {
-                UserProfile newProfile = new UserProfile(uid, username.getText().toString(), email.getText().toString(), password2.getText().toString());
+                UserProfile newProfile = new UserProfile(uid, username.getText().toString(), email.getText().toString());
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference(uid);
                 ref.child("Users").setValue(newProfile.toFirebaseObject());
             }

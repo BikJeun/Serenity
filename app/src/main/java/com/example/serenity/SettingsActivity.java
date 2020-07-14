@@ -2,7 +2,10 @@ package com.example.serenity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +33,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
+
+import static android.app.Activity.RESULT_OK;
 
 public class SettingsActivity extends Fragment {
 
@@ -37,10 +46,11 @@ public class SettingsActivity extends Fragment {
     DatabaseReference reference;
     FirebaseUser user;
     String uid;
+    StorageReference storageReference;
 
     //views from xml
     ImageView profilePic;
-    TextView nameLabel, emailLabel, edit, reset, delete, logout;
+    TextView editPic, nameLabel, emailLabel, edit, reset, delete, logout;
 
     private static Context context = null;
 
@@ -58,6 +68,7 @@ public class SettingsActivity extends Fragment {
         user = FirebaseAuth.getInstance().getCurrentUser();
         uid = user.getUid();
         reference = FirebaseDatabase.getInstance().getReference(uid).child("Users");
+        storageReference = FirebaseStorage.getInstance().getReference();
 
         initializeUI(v);
 
@@ -65,6 +76,7 @@ public class SettingsActivity extends Fragment {
     }
 
     private void initializeUI(View v) {
+        editPic = v.findViewById(R.id.edit_pic);
         profilePic = v.findViewById(R.id.profile_pic);
         nameLabel = v.findViewById(R.id.name);
         emailLabel = v.findViewById(R.id.email);
@@ -75,7 +87,7 @@ public class SettingsActivity extends Fragment {
 
         showProfile();
 
-        profilePic.setOnClickListener(new View.OnClickListener() {
+        editPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 changeDP(v);
@@ -113,6 +125,10 @@ public class SettingsActivity extends Fragment {
     }
 
     private void changeAccount(View v) {
+        SettingsEditAccountDialog dialog = new SettingsEditAccountDialog(getContext());
+        SettingsEditAccountDialog.Builder mBuilder = new SettingsEditAccountDialog.Builder(getContext());
+        dialog.show();
+
         Toast.makeText(getContext(), "account", Toast.LENGTH_SHORT).show();
     }
 
@@ -122,11 +138,11 @@ public class SettingsActivity extends Fragment {
         SettingsDialog.Builder mBuilder = new SettingsDialog.Builder(getContext());
         dialog.show();
 
-        Button yes = v.findViewById(R.id.yes);
+        Button yes = dialog.getView().findViewById(R.id.deleteyes);
         yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                reference.child(uid).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                FirebaseDatabase.getInstance().getReference(uid).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         FirebaseAuth.getInstance().getCurrentUser().delete().addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -148,16 +164,20 @@ public class SettingsActivity extends Fragment {
     }
 
     private void resetPassword(View v) {
-        Toast.makeText(getContext(), "reset", Toast.LENGTH_SHORT).show();
-        startActivity(new Intent(v.getContext(), ResetPassword.class));
+        //Toast.makeText(getContext(), "reset", Toast.LENGTH_SHORT).show();
+        startActivityForResult(new Intent(v.getContext(), ResetPassword.class),100);
+        //startActivity(new Intent(v.getContext(), ResetPassword.class));
 
-        TextView text = v.findViewById(R.id.yes);
 
 
     }
 
     private void changeDP(View v) {
         Toast.makeText(getContext(), "DP", Toast.LENGTH_SHORT).show();
+
+        //Open Gallery
+        Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(openGalleryIntent, 101);
     }
 
     private void showProfile() {
@@ -175,6 +195,51 @@ public class SettingsActivity extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
+            }
+        });
+
+        StorageReference profileRef = storageReference.child("users/" + uid + "/Profile Pic");
+        profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.get().load(uri).into(profilePic);
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == 100) {
+            if(resultCode == RESULT_OK) {
+            }
+        } else if(requestCode == 101) {
+            if(resultCode == RESULT_OK) {
+                Uri imageUri = data.getData();
+                //profilePic.setImageURI(imageUri);
+
+                uploadImageToFirebase(imageUri);
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void uploadImageToFirebase(Uri uri) {
+        final StorageReference fileRef = storageReference.child("users/" + uid + "/Profile Pic");
+        fileRef.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Log.d("Profile Pic Upload", "onSuccess: ");
+                fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Picasso.get().load(uri).into(profilePic);
+                    }
+                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("Profile Pic Upload", "onFailure: " + e.getMessage());
             }
         });
     }

@@ -2,6 +2,7 @@ package com.example.serenity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -93,12 +95,17 @@ public class MainActivity extends Activity {
     private void loginUser(String email, String pwd) {
         auth = FirebaseAuth.getInstance();
         auth.signInWithEmailAndPassword(email, pwd).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(),
-                            "Redirecting...", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(MainActivity.this, Calender.class));
+                    if(FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
+                        Toast.makeText(getApplicationContext(),
+                                "Entering App", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(MainActivity.this, Calender.class));
+                    } else {
+                        Toast.makeText(MainActivity.this, "Please verify your email address", Toast.LENGTH_LONG).show();
+                    }
                 } else {
                     Toast.makeText(MainActivity.this, "Error! " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
                 }

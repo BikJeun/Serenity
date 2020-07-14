@@ -12,6 +12,8 @@ public class SettingsDialog {
     private OnSettingsDialogListener mListener;
     private android.app.AlertDialog alert;
 
+    View v;
+
     public SettingsDialog(Context context) {
         this.context = context;
         buildPlan();
@@ -19,8 +21,9 @@ public class SettingsDialog {
 
     private void buildPlan() {
         View dialogView = View.inflate(context, R.layout.settings_dialog, null);
+        setView(dialogView);
 
-        Button cancel = dialogView.findViewById(R.id.no);
+        Button cancel = dialogView.findViewById(R.id.deleteno);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -38,6 +41,14 @@ public class SettingsDialog {
 
     public void show() {
         alert.show();
+    }
+
+    private void setView(View view) {
+        v = view;
+    }
+
+    public View getView() {
+       return v;
     }
 
 

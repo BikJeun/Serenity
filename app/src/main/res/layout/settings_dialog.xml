@@ -29,7 +29,7 @@
 />
 
             <Button
-                android:id="@+id/yes"
+                android:id="@+id/deleteyes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/yes"
@@ -41,7 +41,7 @@
                 android:layout_marginEnd="50dp" />
 
             <Button
-                android:id="@+id/no"
+                android:id="@+id/deleteno"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/no"

@@ -7,13 +7,11 @@ public class UserProfile {
     String id;
     private String name;
     private String email;
-    private String password;
 
-    public UserProfile(String id, String name, String email, String password) {
+    public UserProfile(String id, String name, String email) {
         this.id = id;
         this.name = name;
         this.email = email;
-        this.password = password;
     }
 
     public String getName() {
@@ -36,23 +34,15 @@ public class UserProfile {
         this.email = email;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getEmail() {
         return email;
     }
 
-    public String getPassword() {
-        return password;
-    }
 
     public Map<String, Object> toFirebaseObject() {
         HashMap<String, Object> event = new HashMap<>();
         event.put("username", name);
         event.put("email", email);
-        event.put("password", password);
 
         return event;
     }

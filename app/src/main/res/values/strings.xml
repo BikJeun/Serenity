@@ -36,7 +36,7 @@
     <string name="example_3_empty_input_text">Text is empty</string>
     <string name="example_3_dialog_delete_confirmation">Delete this event?</string>
     <string name="double_dots" translatable="false">:</string>
-    <string name="cancel">cancel</string>
+    <string name="cancel">Cancel</string>
     <string name="set">set</string>
     <string name="no_events">no events</string>
     <string name="event_default_title">My event</string>
@@ -80,5 +80,8 @@
     <string name="are_you_sure">Are you sure...</string>
     <string name="yes">YES :(</string>
     <string name="no">NO :)</string>
+    <string name="new_email">New Email</string>
+    <string name="new_username">New Username</string>
+    <string name="confirm">Confirm</string>
 
 </resources>
