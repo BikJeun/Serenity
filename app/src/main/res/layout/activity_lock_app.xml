@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/unsplash_lock">
+    android:background="@drawable/settings_background2"
+    >
 
     <TextView
         android:id="@+id/countdown_background"
@@ -59,7 +60,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="260dp"
         android:fontFamily="@font/roboto_light"
-        android:text="10:00"
         android:textColor="#313131"
         android:textSize="80sp" />
 
@@ -79,11 +79,11 @@
         android:id="@+id/timeLeftText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/countdown"
+        android:layout_below="@id/tvInstructions"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="170dp"
         android:fontFamily="@font/roboto_light"
-        android:text="Time left until completion of this task"
+        android:text="Time left until completion of the task"
         android:textColor="#3E3C3C"
         android:textSize="18sp" />
 
