@@ -83,5 +83,8 @@
     <string name="new_email">New Email</string>
     <string name="new_username">New Username</string>
     <string name="confirm">Confirm</string>
+    <string name="set_profile_picture">set profile picture</string>
+    <string name="s_e_t_t_i_n_g_s">SETTINGS</string>
+
 
 </resources>

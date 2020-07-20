@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="55dp"
         android:fontFamily="@font/pt_serif_caption"
         android:text="TO-DO"
         android:textSize="60sp" />
