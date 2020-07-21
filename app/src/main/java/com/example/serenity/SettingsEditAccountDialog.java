@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -115,6 +116,7 @@ public class SettingsEditAccountDialog {
     }
 
     private void checkPasswordAuth(EditText pwd, Button cancel, Button confirm, final View dialogView) {
+        final String[] updatedEmail = new String[1];
         String pass = pwd.getText().toString();
 
         if(pass.isEmpty()) {
@@ -144,30 +146,36 @@ public class SettingsEditAccountDialog {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String updatedEmail = getNewEmail(dialogView);
+                updatedEmail[0] = getNewEmail(dialogView);
 
-                user.verifyBeforeUpdateEmail(updatedEmail);
-                if(updatedEmail.equals(user.getEmail())) {
-                    user.updateEmail(updatedEmail).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(context, "Updating", Toast.LENGTH_SHORT).show();
-                                reference.child("email").removeValue();
-                                reference.child("email").setValue(updatedEmail);
+                user.verifyBeforeUpdateEmail(updatedEmail[0]);
+                context.startActivity(new Intent(context, MainActivity.class));
+                Toast.makeText(context, "Please Verify Updated Email" , Toast.LENGTH_LONG).show();
+                Log.d("email", "onClick: " + user.getEmail());
 
-                                reference.child("username").removeValue();
-                                reference.child("username").setValue(getUsername(dialogView));
-
-                                context.startActivity(new Intent(context, MainActivity.class));
-                            } else {
-                                Toast.makeText(context, "" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    });
-                }
             }
         });
+        if(updatedEmail[0].equals(user.getEmail())) {
+            Log.d("email", "onClick: " + user.getEmail());
+            user.updateEmail(updatedEmail[0]).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(context, "Updating", Toast.LENGTH_SHORT).show();
+                        reference.child("email").removeValue();
+                        reference.child("email").setValue(updatedEmail[0]);
+
+                        reference.child("username").removeValue();
+                        reference.child("username").setValue(getUsername(dialogView));
+
+                        context.startActivity(new Intent(context, MainActivity.class));
+                    } else {
+                        Toast.makeText(context, "" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        }
+
     }
 
     private String getUsername(View dialogView) {
