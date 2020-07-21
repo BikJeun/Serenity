@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/settings_background2"
-    >
+    android:background="@drawable/lockapp_background">
 
     <TextView
         android:id="@+id/countdown_background"
@@ -13,7 +12,9 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="70dp"
         android:layout_marginEnd="20dp"
-        android:background="#66FFFFFF" />
+        android:background="#66FFFFFF"
+
+        />
 
     <TextView
         android:id="@+id/tvInstructions"
@@ -37,21 +38,21 @@
         android:layout_marginTop="20dp"
         android:fontFamily="@font/roboto_light"
         android:text="@string/lock"
-        />
+        android:textColor="#3E3C3C" />
 
     <Button
         android:id="@+id/btnUnlock"
         android:layout_width="85dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/countdown_background"
-        android:layout_toRightOf="@id/btnLock"
-        android:layout_toEndOf="@id/btnLock"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
-        android:text="@string/unlock"
+        android:layout_toEndOf="@id/btnLock"
+        android:layout_toRightOf="@id/btnLock"
         android:fontFamily="@font/roboto_light"
-        />
+        android:text="@string/unlock"
+        android:textColor="#3E3C3C" />
 
     <TextView
         android:id="@+id/countdown"
