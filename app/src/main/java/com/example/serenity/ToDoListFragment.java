@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,6 +33,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -124,33 +126,40 @@ public class ToDoListFragment extends Fragment {
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             switch (direction) {
                 case ItemTouchHelper.LEFT:
-                    int position = viewHolder.getAdapterPosition();
-                    TodoListModel parent = listAdapter.getRootModel();
+                    final int position = viewHolder.getAdapterPosition();
+                    final TodoListModel parent = listAdapter.getRootModel();
                     final TodoListModel deletedModel = models.get(position);
                     final int deletedPos = position;
                     final boolean[] confirm = new boolean[1];
-                    Log.d("todolist", "onSwiped: " + confirm[0]);
 
-                    Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.rlContent), "removed from Recyclerview!", Snackbar.LENGTH_LONG);
+                    deleteData(parent, uid, deletedModel);
+                    models.remove(deletedModel);
+                    //parent.getModels().remove(deletedModel);
+                    listAdapter.setModels(models);
+                    listAdapter.notifyItemChanged(position);
+                    listAdapter.notifyItemRemoved(position);
+                    listAdapter.notifyDataSetChanged();
+
+                    Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.rlContent), "DELETED!", Snackbar.LENGTH_LONG);
                     snackbar.setAction("UNDO", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            undoDelete(parent,deletedModel,position);
                             confirm[0] = true;
+
                         }
                     });
                     snackbar.show();
-                    if (confirm[0]) {
-                        return;
+
+
+
+                    /*if (confirm[0] == true) {
+                        Log.d("todolist", "onSwiped: entered IF");
+                        break;
                     } else {
                         Log.d("todolist", "onSwiped: entered else");
-                        deleteData(parent, uid, deletedModel);
-                        models.remove(deletedModel);
-                        //parent.getModels().remove(deletedModel);
-                        listAdapter.setModels(models);
-                        listAdapter.notifyItemChanged(position);
-                        listAdapter.notifyItemRemoved(position);
-                        listAdapter.notifyDataSetChanged();
-                    }
+
+                    }*/
                     break;
 
                 case ItemTouchHelper.RIGHT:
@@ -207,6 +216,21 @@ public class ToDoListFragment extends Fragment {
         }
     };
 
+    private void undoDelete(TodoListModel parent, TodoListModel deletedModel, int position) {
+        models.add(deletedModel);
+
+        HashMap<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put(deletedModel.getId(), deletedModel.toFireBaseObject());
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(uid).child(parent.getName());
+        ref.updateChildren(childUpdates, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                if (databaseError == null) {
+                    Toast.makeText(getContext(), "UNDO SUCCESFULL", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
 
 
     public static void deleteData(TodoListModel parent, String uid, TodoListModel child) {

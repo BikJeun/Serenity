@@ -51,6 +51,9 @@ public class SettingsEditAccountDialog {
         username.setVisibility(View.GONE);
         password.setVisibility(View.VISIBLE);
 
+
+        final Button confirm = dialogView.findViewById(R.id.AccConfirm);
+        confirm.setVisibility(View.GONE);
         final Button cancel = dialogView.findViewById(R.id.AccCancel);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,13 +62,13 @@ public class SettingsEditAccountDialog {
             }
         });
 
-        final Button confirm = dialogView.findViewById(R.id.AccConfirm);
-        confirm.setOnClickListener(new View.OnClickListener() {
+        final Button next = dialogView.findViewById(R.id.AccNext);
+        next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkPasswordAuth(password, cancel, confirm,dialogView);
-            }
-        });
+                    checkPasswordAuth(password, cancel, confirm, dialogView);
+                }
+            });
 
         // Initialize and build the AlertBuilderDialog
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(context)
@@ -115,11 +118,15 @@ public class SettingsEditAccountDialog {
         }*/
     }
 
-    private void checkPasswordAuth(EditText pwd, Button cancel, Button confirm, final View dialogView) {
+    private void checkPasswordAuth(EditText pwd, Button cancel, final Button confirm, final View dialogView) {
+        final boolean[][] done = {{false, true}};
+        final boolean[] trueDone = new boolean[1];
+
+
         final String[] updatedEmail = new String[1];
         String pass = pwd.getText().toString();
 
-        if(pass.isEmpty()) {
+        if (pass.isEmpty()) {
             pwd.setError("Password Required");
             pwd.requestFocus();
         }
@@ -128,34 +135,42 @@ public class SettingsEditAccountDialog {
         user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()) {
+                if (task.isSuccessful()) {
+                    confirm.setVisibility(View.VISIBLE);
                     password.setVisibility(View.GONE);
                     username.setVisibility(View.VISIBLE);
                     username.setHint(R.string.new_username);
                     email.setVisibility(View.VISIBLE);
                     email.setHint(R.string.new_email);
-                } else if(task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                    trueDone[0] = done[0][1];
+                    //next.setVisibility(View.GONE);
+
+
+                    confirm.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.d("confirm", "onClick: ");
+                            final String[] updatedEmail = new String[1];
+                            updatedEmail[0] = getNewEmail(dialogView);
+
+                            user.verifyBeforeUpdateEmail(updatedEmail[0]);
+                            reference.child("username").removeValue();
+                            reference.child("username").setValue(getUsername(dialogView));
+                            context.startActivity(new Intent(context, MainActivity.class));
+                            Toast.makeText(context, "Please Verify Updated Email" , Toast.LENGTH_LONG).show();
+                            Log.d("email", "onClick: " + user.getEmail());
+                        }
+                    });
+                } else if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                     password.setError("Invalid Password");
                     password.requestFocus();
                 } else {
-                    Toast.makeText(context,"" + task.getException().getMessage(),Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
-        });
 
-        confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updatedEmail[0] = getNewEmail(dialogView);
+            // return trueDone[0];
 
-                user.verifyBeforeUpdateEmail(updatedEmail[0]);
-                reference.child("username").removeValue();
-                reference.child("username").setValue(getUsername(dialogView));
-                context.startActivity(new Intent(context, MainActivity.class));
-                Toast.makeText(context, "Please Verify Updated Email" , Toast.LENGTH_LONG).show();
-                Log.d("email", "onClick: " + user.getEmail());
-
-            }
         });
     }
 
