@@ -12,9 +12,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:fontFamily="@font/roboto_light"
         android:gravity="center"
         android:text="SUN"
-        android:textColor="@color/black"
+        android:textColor="#2E3032"
         android:textSize="14sp" />
 
     <TextView
@@ -24,7 +25,8 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="MON"
-        android:textColor="@color/black"
+        android:fontFamily="@font/roboto_light"
+        android:textColor="#2E3032"
         android:textSize="14sp" />
 
     <TextView
@@ -34,7 +36,8 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="TUE"
-        android:textColor="@color/black"
+        android:fontFamily="@font/roboto_light"
+        android:textColor="#2E3032"
         android:textSize="14sp" />
 
     <TextView
@@ -44,7 +47,8 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="WED"
-        android:textColor="@color/black"
+        android:fontFamily="@font/roboto_light"
+        android:textColor="#2E3032"
         android:textSize="14sp" />
 
     <TextView
@@ -54,7 +58,8 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="THU"
-        android:textColor="@color/black"
+        android:fontFamily="@font/roboto_light"
+        android:textColor="#2E3032"
         android:textSize="14sp" />
 
     <TextView
@@ -64,7 +69,8 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="FRI"
-        android:textColor="@color/black"
+        android:fontFamily="@font/roboto_light"
+        android:textColor="#2E3032"
         android:textSize="14sp" />
 
     <TextView
@@ -74,7 +80,8 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="SAT"
-        android:textColor="@color/black"
+        android:fontFamily="@font/roboto_light"
+        android:textColor="#2E3032"
         android:textSize="14sp" />
 
 </LinearLayout>

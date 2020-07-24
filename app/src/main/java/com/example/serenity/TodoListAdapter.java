@@ -22,7 +22,6 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.serenity.data.TodoListModel;
-import com.example.serenity.uihelpers.OnSwipeTouchListener;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -167,15 +166,15 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
                         break;
                 }
 
-                holder.itemView.setOnTouchListener(new OnSwipeTouchListener(context) {
-                    public void onSwipeLeft() {
-                        Toast.makeText(context, "delete",Toast.LENGTH_SHORT).show();
-                    }
-
-                    public void onSwipeRight() {
-                        Toast.makeText(context, "timer", Toast.LENGTH_SHORT).show();
-                    }
-                });
+//                holder.itemView.setOnTouchListener(new OnSwipeTouchListener(context) {
+//                    public void onSwipeLeft() {
+//                        Toast.makeText(context, "delete",Toast.LENGTH_SHORT).show();
+//                    }
+//
+//                    public void onSwipeRight() {
+//                        Toast.makeText(context, "timer", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
 
 
             }

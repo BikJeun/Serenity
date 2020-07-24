@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="20dp" >
+    android:padding="20dp"
+    android:background="@color/white"
+    >
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="14dp">
+        android:background="@drawable/settings_background2"
+        app:cardCornerRadius="14dp"
+        app:cardBackgroundColor="@color/white">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -21,36 +24,56 @@
                 android:id="@+id/settings_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/are_you_sure"
-                android:layout_marginTop="20dp"
                 android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/pt_serif_caption"
                 android:padding="10dp"
-                android:textSize="30sp"
-/>
+                android:text="@string/confirmation"
+                android:textColor="#313131"
+                android:textSize="23sp" />
+
+            <TextView
+                android:id="@+id/settings_text2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/settings_text"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginEnd="30dp"
+                android:fontFamily="@font/roboto_light"
+                android:gravity="center_horizontal"
+                android:padding="10dp"
+                android:text="Are you sure you want to delete your account?"
+                android:textColor="#313131"
+                android:textSize="18sp" />
 
             <Button
                 android:id="@+id/deleteyes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/yes"
-                android:layout_below="@+id/settings_text"
-                android:layout_marginRight="50dp"
-                android:layout_marginTop="25dp"
-                android:layout_alignParentRight="true"
+                android:layout_below="@+id/settings_text2"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="50dp" />
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="50dp"
+                android:layout_marginRight="50dp"
+                android:fontFamily="@font/roboto_light"
+                android:text="@string/yes"
+                android:textColor="#313131" />
 
             <Button
                 android:id="@+id/deleteno"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/no"
-                android:layout_below="@+id/settings_text"
-                android:layout_marginLeft="50dp"
-                android:layout_marginTop="25dp"
+                android:layout_below="@+id/settings_text2"
+                android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_marginStart="50dp"
-                android:layout_alignParentStart="true" />
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/roboto_light"
+                android:text="@string/no"
+                android:textColor="#313131" />
 
 
         </RelativeLayout>

@@ -73,15 +73,18 @@
     <string name="edit">edit</string>
     <string name="name">Name</string>
     <string name="emailInSettings">Email</string>
-    <string name="editAccount">Edit Account</string>
-    <string name="resetPassword">Reset Password</string>
-    <string name="deleteAccount">Delete Account</string>
-    <string name="signOut">Sign Out</string>
-    <string name="are_you_sure">Are you sure...</string>
-    <string name="yes">YES :(</string>
-    <string name="no">NO :)</string>
+    <string name="editAccount">Edit account</string>
+    <string name="resetPassword">Reset password</string>
+    <string name="deleteAccount">Delete account</string>
+    <string name="signOut">Sign out</string>
+    <string name="confirmation">Confirmation</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
     <string name="new_email">New Email</string>
     <string name="new_username">New Username</string>
     <string name="confirm">Confirm</string>
+    <string name="set_profile_picture">Set profile picture</string>
+    <string name="s_e_t_t_i_n_g_s">SETTINGS</string>
+
 
 </resources>

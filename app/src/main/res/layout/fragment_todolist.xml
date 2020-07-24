@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/unsplash_pink"
+    android:background="@drawable/todo_background"
     >
 
     <LinearLayout
@@ -23,9 +23,7 @@
             android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
             android:layout_marginTop="150dp"
-            android:background="#72FFFFFF"
             android:paddingStart="10dp"
             android:paddingTop="10dp"
             android:paddingEnd="10dp" />
@@ -35,36 +33,20 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_title"
         android:layout_width="match_parent"
-        android:layout_height="95dp"
-        android:background="#66D5C8DF"
+        android:layout_height="150dp"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/roboto_light"
-        android:text="@string/s_e_r_e_n_i_t_y"
-        android:textSize="55sp" />
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="55dp"
+        android:fontFamily="@font/pt_serif_caption"
+        android:text="TO-DO"
+        android:textSize="60sp" />
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_marginTop="95dp"
-        android:background="#66C5A1A9"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
-        android:fontFamily="@font/roboto_light"
-        android:text="@string/to_do_list"
-        android:textSize="30sp" />
 
 </RelativeLayout>
