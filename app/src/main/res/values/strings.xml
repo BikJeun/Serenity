@@ -85,6 +85,9 @@
     <string name="confirm">Confirm</string>
     <string name="set_profile_picture">Set profile picture</string>
     <string name="s_e_t_t_i_n_g_s">SETTINGS</string>
+    <string name="set_duration">SET DURATION</string>
+    <string name="back">BACK</string>
+    <string name="input_time_in_minutes">Input Time In Minutes</string>
 
 
 </resources>

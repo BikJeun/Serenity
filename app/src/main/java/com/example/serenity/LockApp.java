@@ -6,21 +6,28 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.KeyguardManager;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
+import android.text.InputType;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.serenity.utils.LockScreenService;
 import com.example.serenity.utils.LockScreenUtils;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 public class LockApp extends Activity implements LockScreenUtils.OnLockStatusChangedListener {
 
@@ -29,9 +36,13 @@ public class LockApp extends Activity implements LockScreenUtils.OnLockStatusCha
     private Button BtnLock;
     private TextView timer;
     private TextView instructions;
+    TextView timeleft;
+    public static boolean complete = false;
 
     private CountDownTimer countDownTimer;
-    private long timeLeftInMilliSeconds = 1200000; //1200000
+    public long timeLeftInMilliSeconds; //= 1200000; //1200000
+    android.app.AlertDialog alert;
+    //TodoListTimeDialog dialog = new TodoListTimeDialog(this);
 
     private LockScreenUtils mLockScreenUtils;
 
@@ -58,6 +69,8 @@ public class LockApp extends Activity implements LockScreenUtils.OnLockStatusCha
 
         timer = findViewById(R.id.countdown);
         timer.setVisibility(View.INVISIBLE);
+        timeleft = findViewById(R.id.timeLeftText);
+        timeleft.setVisibility(View.INVISIBLE);
 
         init();
 
@@ -70,7 +83,7 @@ public class LockApp extends Activity implements LockScreenUtils.OnLockStatusCha
 
             try {
                 // disable keyguard
-                disableKeyguard();
+                //disableKeyguard();
 
                 // lock home button
                 lockHomeButton();
@@ -95,33 +108,49 @@ public class LockApp extends Activity implements LockScreenUtils.OnLockStatusCha
         instructions = findViewById(R.id.tvInstructions);
         btnUnlock = (Button) findViewById(R.id.btnUnlock);
         btnUnlock.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
+                Log.d("unlock", "onClick: " + cheated);
                 // unlock home button and then screen on button press
                 cheated = true;
                 unlockHomeButton();
                 timer.setVisibility(View.INVISIBLE);
                 instructions.setText(getResources().getString(R.string.giveup));
                 unlockDevice();
+
+                //setResult(RESULT_OK, new Intent());
             }
         });
 
+        final EditText input = findViewById(R.id.userInput);
+        //input.setInputType(InputType.TYPE_CLASS_NUMBER);
         BtnLock = findViewById(R.id.btnLock);
         BtnLock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                instructions.setText(getResources().getString(R.string.startedtimer));
-                BtnLock.setVisibility(View.GONE);
-                timer.setVisibility(View.VISIBLE);
-                startCountDown();
-
+                if(input.getText().toString().isEmpty()) {
+                    input.setError("Please enter duration");
+                    input.requestFocus();
+                } else if(Pattern.matches("[a-zA-Z]+", input.getText().toString())){
+                    input.setError("Please enter duration in numbers");
+                    input.requestFocus();
+                }  else {
+                    input.requestFocus();
+                    timeLeftInMilliSeconds = Long.parseLong((input.getText().toString())) * 60000;
+                    instructions.setText(getResources().getString(R.string.startedtimer));
+                    BtnLock.setVisibility(View.GONE);
+                    timer.setVisibility(View.VISIBLE);
+                    timeleft.setVisibility(View.VISIBLE);
+                    input.setVisibility(View.GONE);
+                    startCountDown();
+                }
             }
         });
     }
 
     private void startCountDown() {
-         countDownTimer = new CountDownTimer(timeLeftInMilliSeconds,1000) {
+        disableKeyguard();
+        countDownTimer = new CountDownTimer(timeLeftInMilliSeconds, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 timeLeftInMilliSeconds = millisUntilFinished;
@@ -132,15 +161,18 @@ public class LockApp extends Activity implements LockScreenUtils.OnLockStatusCha
             public void onFinish() {
                 instructions.setText(getResources().getString(R.string.end));
                 unlockDevice();
+                ToDoListFragment.deleteData(ToDoListFragment.getParent(), FirebaseAuth.getInstance().getCurrentUser().getUid(), ToDoListFragment.getDeleted());
+                setResult(RESULT_OK, new Intent());
 
             }
         }.start();
     }
-    private void updateTimer() {
-        int mins = (int) (timeLeftInMilliSeconds /1000) / 60;
-        int sec = (int) (timeLeftInMilliSeconds /1000) % 60;
 
-        String timeLeftFormatted = String.format(Locale.getDefault(),"%02d: %02d",mins, sec);
+    private void updateTimer() {
+        int mins = (int) (timeLeftInMilliSeconds / 1000) / 60;
+        int sec = (int) (timeLeftInMilliSeconds / 1000) % 60;
+
+        String timeLeftFormatted = String.format(Locale.getDefault(), "%02d: %02d", mins, sec);
         timer.setText(timeLeftFormatted);
     }
 
@@ -161,7 +193,9 @@ public class LockApp extends Activity implements LockScreenUtils.OnLockStatusCha
                     break;
             }
         }
-    };
+    }
+
+    ;
 
     // Don't finish Activity on Back press
     @Override
@@ -241,11 +275,22 @@ public class LockApp extends Activity implements LockScreenUtils.OnLockStatusCha
     }
 
     //Simply unlock device by finishing the activity
-    private void unlockDevice()
-    {
+    private void unlockDevice() {
         finish();
     }
 
-    public static boolean getCheated() { return cheated; }
+    public static boolean getCheated() {
+        return cheated;
+    }
 
+   /* @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        long value = data.getParcelableExtra("EXTRA_TIME");
+        if (requestCode == 100) {
+            if (resultCode == RESULT_OK) {
+                timeLeftInMilliSeconds = value * 60000;
+            }
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }*/
 }

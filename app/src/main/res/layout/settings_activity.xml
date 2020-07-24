@@ -43,8 +43,8 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-
-            <ImageView
+            
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_pic"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
@@ -55,7 +55,7 @@
                 android:clickable="true"
                 android:contentDescription="@string/set_profile_picture"
                 android:focusable="true"
-                tools:ignore="VectorDrawableCompat" />
+                tools:ignore="VectorDrawableCompat"/>
 
             <TextView
                 android:id="@+id/edit_pic"

@@ -149,33 +149,14 @@ public class SettingsEditAccountDialog {
                 updatedEmail[0] = getNewEmail(dialogView);
 
                 user.verifyBeforeUpdateEmail(updatedEmail[0]);
+                reference.child("username").removeValue();
+                reference.child("username").setValue(getUsername(dialogView));
                 context.startActivity(new Intent(context, MainActivity.class));
                 Toast.makeText(context, "Please Verify Updated Email" , Toast.LENGTH_LONG).show();
                 Log.d("email", "onClick: " + user.getEmail());
 
             }
         });
-        if(updatedEmail[0].equals(user.getEmail())) {
-            Log.d("email", "onClick: " + user.getEmail());
-            user.updateEmail(updatedEmail[0]).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(context, "Updating", Toast.LENGTH_SHORT).show();
-                        reference.child("email").removeValue();
-                        reference.child("email").setValue(updatedEmail[0]);
-
-                        reference.child("username").removeValue();
-                        reference.child("username").setValue(getUsername(dialogView));
-
-                        context.startActivity(new Intent(context, MainActivity.class));
-                    } else {
-                        Toast.makeText(context, "" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                }
-            });
-        }
-
     }
 
     private String getUsername(View dialogView) {

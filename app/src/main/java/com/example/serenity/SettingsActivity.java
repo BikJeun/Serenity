@@ -173,7 +173,7 @@ public class SettingsActivity extends Fragment {
     }
 
     private void changeDP(View v) {
-        Toast.makeText(getContext(), "DP", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), "DP", Toast.LENGTH_SHORT).show();
 
         //Open Gallery
         Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);

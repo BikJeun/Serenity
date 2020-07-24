@@ -1,6 +1,5 @@
 package com.example.serenity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -34,6 +33,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import static android.app.Activity.RESULT_OK;
+
 public class ToDoListFragment extends Fragment {
 
     ArrayList<TodoListModel> models = new ArrayList<>();
@@ -43,6 +44,11 @@ public class ToDoListFragment extends Fragment {
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     final String uid = user.getUid();
     FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+    int position2;
+    static TodoListModel parent2;
+    static TodoListModel deletedModel2;
+    final int deletedPos2 = position2;
 
     @Nullable
     @Override
@@ -65,6 +71,8 @@ public class ToDoListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Log.d("todolistfrag", "onCreate: " + models.toString());
+
         TodoListModel today = new TodoListModel("","TODAY", "", 1);
         TodoListModel tmr = new TodoListModel("","TOMORROW", "", 1);
         TodoListModel upcoming = new TodoListModel("","UPCOMING", "", 1);
@@ -80,6 +88,7 @@ public class ToDoListFragment extends Fragment {
         getFirebaseData(1, database.getReference("TODAY").child(uid));
         getFirebaseData(2, database.getReference("TOMORROW").child(uid));
         getFirebaseData(3, database.getReference("UPCOMING").child(uid));
+
 
     }
 
@@ -120,6 +129,7 @@ public class ToDoListFragment extends Fragment {
                     final TodoListModel deletedModel = models.get(position);
                     final int deletedPos = position;
                     final boolean[] confirm = new boolean[1];
+                    Log.d("todolist", "onSwiped: " + confirm[0]);
 
                     Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.rlContent), "removed from Recyclerview!", Snackbar.LENGTH_LONG);
                     snackbar.setAction("UNDO", new View.OnClickListener() {
@@ -129,42 +139,28 @@ public class ToDoListFragment extends Fragment {
                         }
                     });
                     snackbar.show();
-                    if (confirm[0] == true) {
+                    if (confirm[0]) {
                         return;
+                    } else {
+                        Log.d("todolist", "onSwiped: entered else");
+                        deleteData(parent, uid, deletedModel);
+                        models.remove(deletedModel);
+                        //parent.getModels().remove(deletedModel);
+                        listAdapter.setModels(models);
+                        listAdapter.notifyItemChanged(position);
+                        listAdapter.notifyItemRemoved(position);
+                        listAdapter.notifyDataSetChanged();
                     }
-                    deleteData(parent, uid, deletedModel);
-                    listAdapter.notifyItemChanged(position);
-                    listAdapter.notifyItemRemoved(position);
-                    listAdapter.notifyDataSetChanged();
                     break;
 
                 case ItemTouchHelper.RIGHT:
-                    startActivity(new Intent(getActivity(), LockApp.class));
-                    int position2 = viewHolder.getAdapterPosition();
-                    TodoListModel parent2 = listAdapter.getRootModel();
-                    final TodoListModel deletedModel2 = models.get(position2);
+                    Log.d("BEGIN", "onClick: ");
+                    startActivityForResult(new Intent(getActivity(), LockApp.class), 100);
+                     position2 = viewHolder.getAdapterPosition();
+                     parent2 = listAdapter.getRootModel();
+                    deletedModel2 = models.get(position2);
                     final int deletedPos2 = position2;
-                    final boolean[] confirm2 = new boolean[1];
 
-                    Snackbar snackbar2 = Snackbar.make(getActivity().findViewById(R.id.rlContent), "removed from Recyclerview!", Snackbar.LENGTH_LONG);
-                    snackbar2.setAction("UNDO", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            confirm2[0] = true;
-                        }
-                    });
-                    snackbar2.show();
-                    if (confirm2[0] == true) {
-                        return;
-                    }
-
-                    if(!LockApp.getCheated()) {
-                        deleteData(parent2, uid, deletedModel2);
-                    }
-
-                    listAdapter.notifyItemChanged(position2);
-                    listAdapter.notifyItemRemoved(position2);
-                    listAdapter.notifyDataSetChanged();
                     break;
             }
 
@@ -211,8 +207,10 @@ public class ToDoListFragment extends Fragment {
         }
     };
 
-    public void deleteData(TodoListModel parent, String uid, TodoListModel child) {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(parent.getName()).child(uid);
+
+
+    public static void deleteData(TodoListModel parent, String uid, TodoListModel child) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(uid).child(parent.getName());
         ref.child(child.getId()).removeValue();
 
     }
@@ -231,4 +229,27 @@ public class ToDoListFragment extends Fragment {
         return bitmap;
     }
 
+    public static TodoListModel getParent() {
+        return parent2;
+    }
+
+    public static TodoListModel getDeleted() {
+        return deletedModel2;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == 100) {
+            if(resultCode == RESULT_OK) {
+                if(!LockApp.getCheated()) {
+                    Log.d("unlock aft", "onClick: " + LockApp.getCheated());
+                    //deleteData(parent2, uid, deletedModel2);
+                    listAdapter.notifyItemChanged(position2);
+                    listAdapter.notifyItemRemoved(position2);
+                    listAdapter.notifyDataSetChanged();
+                }
+            }
+            }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

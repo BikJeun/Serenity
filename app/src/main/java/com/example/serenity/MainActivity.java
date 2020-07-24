@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
 import java.util.Objects;
@@ -92,8 +93,9 @@ public class MainActivity extends Activity {
         return email.matches(regex);
     }
 
-    private void loginUser(String email, String pwd) {
+    private void loginUser(final String email, String pwd) {
         auth = FirebaseAuth.getInstance();
+        final String uid = auth.getCurrentUser().getUid();
         auth.signInWithEmailAndPassword(email, pwd).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
@@ -102,6 +104,10 @@ public class MainActivity extends Activity {
                     if(FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
                         Toast.makeText(getApplicationContext(),
                                 "Entering App", Toast.LENGTH_SHORT).show();
+
+                        FirebaseDatabase.getInstance().getReference(uid).child("Users").child("email").removeValue();
+                        FirebaseDatabase.getInstance().getReference(uid).child("Users").child("email").setValue(email);
+
                         startActivity(new Intent(MainActivity.this, Calender.class));
                     } else {
                         Toast.makeText(MainActivity.this, "Please verify your email address", Toast.LENGTH_LONG).show();

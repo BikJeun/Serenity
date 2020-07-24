@@ -7,22 +7,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.serenity.data.TodoListModel;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -32,9 +26,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Handler;
 
 public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHolder> {
     private Context context;
@@ -44,9 +35,112 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
     //ItemTouchHelper itemTouchHelper.attachToRecyclerView(recyclerView);
 
 
+    public void setModels(ArrayList<TodoListModel> models) {
+        this.models = models;
+    }
+
     public TodoListAdapter(Context context, ArrayList<TodoListModel> models) {
         this.context = context;
         this.models = models;
+
+        getDataFromFirebase();
+
+    }
+
+    private void getDataFromFirebase() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        assert user != null;
+        final String uid = user.getUid();
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference ref1 = database.getReference(uid).child("TODAY");
+        final DatabaseReference ref2 = database.getReference(uid).child("TOMORROW");
+        final DatabaseReference ref3 = database.getReference(uid).child("UPCOMING");
+
+        ref1.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //Toast.makeText(context, "single data", Toast.LENGTH_SHORT).show();
+                /*int position = (int) v.getTag(R.string.position);
+                rootModel = (TodoListModel) v.getTag(R.string.MODEL);
+
+                ref.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {*/
+                        models.get(0).getModels().clear();
+                        for (DataSnapshot data : dataSnapshot.getChildren()) {
+                            Log.d("creating data", "onClick: " + data);
+                            String id = data.getKey();
+                            String task = data.child("Task").getValue(String.class);
+                            String msg = data.child("message").getValue(String.class);
+                            TodoListModel todo = new TodoListModel(id, task, msg, 2);
+
+                            models.get(0).getModels().add(todo);
+                        }
+                        notifyDataSetChanged();
+                    }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        ref2.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //Toast.makeText(context, "single data", Toast.LENGTH_SHORT).show();
+                /*int position = (int) v.getTag(R.string.position);
+                rootModel = (TodoListModel) v.getTag(R.string.MODEL);
+
+                ref.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {*/
+                models.get(1).getModels().clear();
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    Log.d("creating data", "onClick: " + data);
+                    String id = data.getKey();
+                    String task = data.child("Task").getValue(String.class);
+                    String msg = data.child("message").getValue(String.class);
+                    TodoListModel todo = new TodoListModel(id, task, msg, 2);
+
+                    models.get(1).getModels().add(todo);
+                }
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        ref3.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //Toast.makeText(context, "single data", Toast.LENGTH_SHORT).show();
+                /*int position = (int) v.getTag(R.string.position);
+                rootModel = (TodoListModel) v.getTag(R.string.MODEL);
+
+                ref.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {*/
+                models.get(2).getModels().clear();
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    Log.d("creating data", "onClick: " + data);
+                    String id = data.getKey();
+                    String task = data.child("Task").getValue(String.class);
+                    String msg = data.child("message").getValue(String.class);
+                    TodoListModel todo = new TodoListModel(id, task, msg, 2);
+
+                    models.get(2).getModels().add(todo);
+                }
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
@@ -102,9 +196,10 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
                 int position = (int) v.getTag(R.string.position);
                 rootModel = (TodoListModel) v.getTag(R.string.MODEL);
 
-                ref.addValueEventListener(new ValueEventListener() {
+               ref.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        //Toast.makeText(context, "double data", Toast.LENGTH_SHORT).show();
                         rootModel.getModels().clear();
                         for (DataSnapshot data : dataSnapshot.getChildren()) {
                             Log.d("creating data", "onClick: " + data);
@@ -124,11 +219,6 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
 
                     }
                 });
-
-                if (rootModel.getModels().isEmpty() && rootModel.getLevel() == 1) {
-                    Toast.makeText(context, "EMPTY", Toast.LENGTH_SHORT).show();
-                    return;
-                }
 
                 switch (rootModel.getState()) {
 
@@ -166,15 +256,20 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
                         break;
                 }
 
-//                holder.itemView.setOnTouchListener(new OnSwipeTouchListener(context) {
-//                    public void onSwipeLeft() {
-//                        Toast.makeText(context, "delete",Toast.LENGTH_SHORT).show();
-//                    }
-//
-//                    public void onSwipeRight() {
-//                        Toast.makeText(context, "timer", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
+                if (rootModel.getModels().isEmpty() && rootModel.getLevel() == 1) {
+                    Toast.makeText(context, "EMPTY", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+              /*  holder.itemView.setOnTouchListener(new OnSwipeTouchListener(context) {
+                    public void onSwipeLeft() {
+                        Toast.makeText(context, "delete",Toast.LENGTH_SHORT).show();
+                    }
+
+                    public void onSwipeRight() {
+                        Toast.makeText(context, "timer", Toast.LENGTH_SHORT).show();
+                    }
+                });*/
 
 
             }
@@ -262,9 +357,7 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ViewHo
         }
     }
 
-    public static void removeTaskObject () {
 
-    }
 
 
 
