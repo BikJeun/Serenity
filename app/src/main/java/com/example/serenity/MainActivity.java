@@ -95,7 +95,6 @@ public class MainActivity extends Activity {
 
     private void loginUser(final String email, String pwd) {
         auth = FirebaseAuth.getInstance();
-        final String uid = auth.getCurrentUser().getUid();
         auth.signInWithEmailAndPassword(email, pwd).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
@@ -105,6 +104,8 @@ public class MainActivity extends Activity {
                         Toast.makeText(getApplicationContext(),
                                 "Entering App", Toast.LENGTH_SHORT).show();
 
+
+                        String uid = auth.getCurrentUser().getUid();
                         FirebaseDatabase.getInstance().getReference(uid).child("Users").child("email").removeValue();
                         FirebaseDatabase.getInstance().getReference(uid).child("Users").child("email").setValue(email);
 
