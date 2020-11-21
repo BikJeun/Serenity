@@ -22,3 +22,8 @@ Advisor : Lin Ruo
 Prof Jin Zhao
 
 NUS School of Computing
+
+## License 
+Copyright (c) Ong Bik Jeun @BikJeun & Grace Lixiang @gracelix 
+
+License under [MIT License](LICENSE)
